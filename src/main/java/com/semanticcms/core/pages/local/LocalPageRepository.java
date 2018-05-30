@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2017  AO Industries, Inc.
+ * Copyright (C) 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,7 +26,6 @@ import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.net.Path;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.pages.CaptureLevel;
-import com.semanticcms.core.pages.PageNotFoundException;
 import com.semanticcms.core.pages.PageRepository;
 import java.io.IOException;
 import javax.servlet.ServletContext;
@@ -42,7 +41,7 @@ abstract public class LocalPageRepository implements PageRepository {
 	// TODO: Then auto resolve these before calling a subclass implementation of getPage that takes additional parameters.
 
 	@Override
-	public Page getPage(Path path, CaptureLevel level) throws IOException, PageNotFoundException {
+	public Page getPage(Path path, CaptureLevel level) throws IOException {
 		throw new NotImplementedException();
 	}
 }
