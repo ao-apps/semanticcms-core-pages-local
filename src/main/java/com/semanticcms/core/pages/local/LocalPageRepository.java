@@ -22,13 +22,25 @@
  */
 package com.semanticcms.core.pages.local;
 
-import com.aoindustries.lang.NotImplementedException;
+import com.aoindustries.encoding.MediaType;
 import com.aoindustries.net.Path;
+import com.aoindustries.servlet.ServletContextCache;
+import com.aoindustries.servlet.http.Dispatcher;
+import com.aoindustries.servlet.http.NullHttpServletResponseWrapper;
+import com.aoindustries.servlet.http.ServletUtil;
+import com.aoindustries.util.Tuple2;
+import com.semanticcms.core.model.Node;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.pages.PageRepository;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.SkipPageException;
 
 /**
  * Support for accessing pages from the local {@link ServletContext}.
@@ -38,10 +50,136 @@ abstract public class LocalPageRepository implements PageRepository {
 
 	// TODO: A way to register the current capture level, page, node, request, ...
 
-	// TODO: Then auto resolve these before calling a subclass implementation of getPage that takes additional parameters.
+	// TODO: Then auto resolve these before calling a subclass implementation of capturePage that takes additional parameters.
+
+	final protected ServletContext servletContext;
+	final protected ServletContextCache cache;
+	final protected Path path;
+	final protected String prefix;
+
+	protected LocalPageRepository(ServletContext servletContext, Path path) {
+		this.servletContext = servletContext;
+		this.cache = ServletContextCache.getCache(servletContext);
+		this.path = path;
+		String repositoryPathStr = path.toString();
+		this.prefix = repositoryPathStr.equals("/") ? "" : repositoryPathStr;
+	}
+
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	/**
+	 * Gets the path, without any trailing slash except for "/".
+	 */
+	public Path getPath() {
+		return path;
+	}
+
+	/**
+	 * Gets the prefix useful for direct path concatenation, which is the path itself except empty string for "/".
+	 */
+	public String getPrefix() {
+		return prefix;
+	}
+
+	/**
+	 * Must generate a toString based on the repository type and prefix
+	 */
+	@Override
+	abstract public String toString();
+
+	@Override
+	public boolean isAvailable() {
+		return true;
+	}
 
 	@Override
 	public Page getPage(Path path, CaptureLevel level) throws IOException {
-		throw new NotImplementedException();
+		Tuple2<String, RequestDispatcher> pathAndRequestDispatcher = getRequestDispatcher(path);
+		if(pathAndRequestDispatcher == null) return null;
+		final String requestDispatcherPath = pathAndRequestDispatcher.getElement1();
+		final RequestDispatcher dispatcher = pathAndRequestDispatcher.getElement2();
+		try {
+			final HttpServletRequest request = PageContext.getRequest();
+			final HttpServletResponse response = PageContext.getResponse();
+			// Perform new capture
+			Node oldNode = CurrentNode.getCurrentNode(request);
+			Page oldPage = CurrentPage.getCurrentPage(request);
+			try {
+				// Clear request values that break captures
+				if(oldNode != null) CurrentNode.setCurrentNode(request, null);
+				if(oldPage != null) CurrentPage.setCurrentPage(request, null);
+				CaptureLevel oldCaptureLevel = CurrentCaptureLevel.getCaptureLevel(request);
+				CaptureContext oldCaptureContext = CaptureContext.getCaptureContext(request);
+				try {
+					// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
+					String oldContentType = response.getContentType();
+					try {
+						response.setContentType(MediaType.XHTML.getContentType());
+						// Set new capture context
+						CurrentCaptureLevel.setCaptureLevel(request, level);
+						CaptureContext captureContext = new CaptureContext();
+						request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
+						// TODO: Set more "current" for request and response
+						// TODO: Is PageContext useful for this?
+						// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
+						// Include the page resource, discarding any direct output
+						try {
+							// Clear PageContext on include
+							PageContext.newPageContextSkip(
+								null,
+								null,
+								null,
+								new PageContext.PageContextRunnableSkip() {
+									@Override
+									public void run() throws ServletException, IOException, SkipPageException {
+										Dispatcher.include(
+											requestDispatcherPath,
+											dispatcher,
+											// Always capture as "GET" request
+											ServletUtil.METHOD_GET.equals(request.getMethod())
+												// Is already "GET"
+												? request
+												// Wrap to make "GET"
+												: new HttpServletRequestWrapper(request) {
+													@Override
+													public String getMethod() {
+														return ServletUtil.METHOD_GET;
+													}
+												},
+											new NullHttpServletResponseWrapper(response)
+										);
+									}
+								}
+							);
+						} catch(SkipPageException e) {
+							// An individual page may throw SkipPageException which only terminates
+							// the capture, not the request overall
+						}
+						Page capturedPage = captureContext.getCapturedPage();
+						if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
+						return capturedPage;
+					} finally {
+						if(oldContentType != null) response.setContentType(oldContentType);
+					}
+				} finally {
+					// Restore previous capture context
+					CurrentCaptureLevel.setCaptureLevel(request, oldCaptureLevel);
+					request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, oldCaptureContext);
+				}
+			} finally {
+				if(oldNode != null) CurrentNode.setCurrentNode(request, oldNode);
+				if(oldPage != null) CurrentPage.setCurrentPage(request, oldPage);
+			}
+		} catch(ServletException e) {
+			throw new IOException(e);
+		}
 	}
+
+	/**
+	 * Gets the path for the {@link RequestDispatcher} for the given path or {@code null}
+	 * if the page is known to not exist.
+	 */
+	abstract protected Tuple2<String,RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
 }
