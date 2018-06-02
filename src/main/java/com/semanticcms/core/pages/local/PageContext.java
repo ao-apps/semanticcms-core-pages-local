@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -24,6 +24,7 @@ package com.semanticcms.core.pages.local;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.Callable;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,11 +56,12 @@ final public class PageContext {
 
 	static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
 
-	public static interface PageContextCallable {
-		void call() throws ServletException, IOException, SkipPageException;
+	// TODO: Java 1.8: Functional
+	public static interface PageContextRunnable {
+		void run() throws ServletException, IOException;
 	}
 
-	public static void newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallable target) throws ServletException, IOException, SkipPageException {
+	public static void newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnable target) throws ServletException, IOException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -74,7 +76,7 @@ final public class PageContext {
 			} else {
 				newOut = oldOut;
 			}
-			target.call();
+			target.run();
 		} finally {
 			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
 			if(newRequest != oldRequest) request.set(oldRequest);
@@ -83,8 +85,39 @@ final public class PageContext {
 		}
 	}
 
-	public static interface PageContextCallableSkip {
-		void call() throws ServletException, IOException, SkipPageException;
+	// TODO: Java 1.8: Functional
+	public static interface PageContextCallable<V> extends Callable<V> {
+		@Override
+		V call() throws ServletException, IOException;
+	}
+
+	public static <V> V newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallable<V> target) throws ServletException, IOException {
+		final ServletContext oldServletContext = servletContext.get();
+		final HttpServletRequest oldRequest = request.get();
+		final HttpServletResponse oldResponse = response.get();
+		final PrintWriter oldOut = out.get();
+		PrintWriter newOut = null;
+		try {
+			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
+			if(newRequest != oldRequest) request.set(newRequest);
+			if(newResponse != oldResponse) {
+				response.set(newResponse);
+				out.set(null);
+			} else {
+				newOut = oldOut;
+			}
+			return target.call();
+		} finally {
+			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
+			if(newRequest != oldRequest) request.set(oldRequest);
+			if(newResponse != oldResponse) response.set(oldResponse);
+			if(newOut != oldOut) out.set(oldOut);
+		}
+	}
+
+	// TODO: Java 1.8: Functional
+	public static interface PageContextRunnableSkip {
+		void run() throws ServletException, IOException, SkipPageException;
 	}
 
 	/**
@@ -98,7 +131,7 @@ final public class PageContext {
 		ServletContext newServletContext,
 		HttpServletRequest newRequest,
 		HttpServletResponse newResponse,
-		PageContextCallableSkip target
+		PageContextRunnableSkip target
 	) throws ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
@@ -114,7 +147,7 @@ final public class PageContext {
 			} else {
 				newOut = oldOut;
 			}
-			target.call();
+			target.run();
 		} finally {
 			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
 			if(newRequest != oldRequest) request.set(oldRequest);
@@ -123,11 +156,25 @@ final public class PageContext {
 		}
 	}
 
-	public static interface PageContextCallableSkipE<E extends Throwable> {
-		void call() throws E, ServletException, IOException, SkipPageException;
+	// TODO: Java 1.8: Functional
+	public static interface PageContextCallableSkip<V> extends Callable<V> {
+		@Override
+		V call() throws ServletException, IOException, SkipPageException;
 	}
 
-	public static <E extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<E> target) throws E, ServletException, IOException, SkipPageException {
+	/**
+	 * Establishes a new page context.
+	 * This usually does not need to be done directly as creating a page will
+	 * establish the starting page context.
+	 * 
+	 * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
+	 */
+	public static <V> V newPageContextSkip(
+		ServletContext newServletContext,
+		HttpServletRequest newRequest,
+		HttpServletResponse newResponse,
+		PageContextCallableSkip<V> target
+	) throws ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -142,7 +189,7 @@ final public class PageContext {
 			} else {
 				newOut = oldOut;
 			}
-			target.call();
+			return target.call();
 		} finally {
 			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
 			if(newRequest != oldRequest) request.set(oldRequest);
@@ -151,11 +198,12 @@ final public class PageContext {
 		}
 	}
 
-	public static interface PageContextCallableSkipEE<E1 extends Throwable, E2 extends Throwable> {
-		void call() throws E1, E2, ServletException, IOException, SkipPageException;
+	// TODO: Java 1.8: Functional
+	public static interface PageContextRunnableSkipE<E extends Throwable> {
+		void run() throws E, ServletException, IOException, SkipPageException;
 	}
 
-	public static <E1 extends Throwable, E2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<E1,E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
+	public static <E extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<E> target) throws E, ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -170,7 +218,95 @@ final public class PageContext {
 			} else {
 				newOut = oldOut;
 			}
-			target.call();
+			target.run();
+		} finally {
+			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
+			if(newRequest != oldRequest) request.set(oldRequest);
+			if(newResponse != oldResponse) response.set(oldResponse);
+			if(newOut != oldOut) out.set(oldOut);
+		}
+	}
+
+	// TODO: Java 1.8: Functional
+	public static interface PageContextCallableSkipE<V,E extends Exception> extends Callable<V> {
+		@Override
+		V call() throws E, ServletException, IOException, SkipPageException;
+	}
+
+	public static <V,E extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V,E> target) throws E, ServletException, IOException, SkipPageException {
+		final ServletContext oldServletContext = servletContext.get();
+		final HttpServletRequest oldRequest = request.get();
+		final HttpServletResponse oldResponse = response.get();
+		final PrintWriter oldOut = out.get();
+		PrintWriter newOut = null;
+		try {
+			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
+			if(newRequest != oldRequest) request.set(newRequest);
+			if(newResponse != oldResponse) {
+				response.set(newResponse);
+				out.set(null);
+			} else {
+				newOut = oldOut;
+			}
+			return target.call();
+		} finally {
+			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
+			if(newRequest != oldRequest) request.set(oldRequest);
+			if(newResponse != oldResponse) response.set(oldResponse);
+			if(newOut != oldOut) out.set(oldOut);
+		}
+	}
+
+	// TODO: Java 1.8: Functional
+	public static interface PageContextRunnableSkipEE<E1 extends Throwable, E2 extends Throwable> {
+		void run() throws E1, E2, ServletException, IOException, SkipPageException;
+	}
+
+	public static <E1 extends Throwable, E2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<E1,E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
+		final ServletContext oldServletContext = servletContext.get();
+		final HttpServletRequest oldRequest = request.get();
+		final HttpServletResponse oldResponse = response.get();
+		final PrintWriter oldOut = out.get();
+		PrintWriter newOut = null;
+		try {
+			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
+			if(newRequest != oldRequest) request.set(newRequest);
+			if(newResponse != oldResponse) {
+				response.set(newResponse);
+				out.set(null);
+			} else {
+				newOut = oldOut;
+			}
+			target.run();
+		} finally {
+			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
+			if(newRequest != oldRequest) request.set(oldRequest);
+			if(newResponse != oldResponse) response.set(oldResponse);
+			if(newOut != oldOut) out.set(oldOut);
+		}
+	}
+
+	// TODO: Java 1.8: Functional
+	public static interface PageContextCallableSkipEE<V,E1 extends Exception, E2 extends Exception> extends Callable<V> {
+		V call() throws E1, E2, ServletException, IOException, SkipPageException;
+	}
+
+	public static <V,E1 extends Exception, E2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V,E1,E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
+		final ServletContext oldServletContext = servletContext.get();
+		final HttpServletRequest oldRequest = request.get();
+		final HttpServletResponse oldResponse = response.get();
+		final PrintWriter oldOut = out.get();
+		PrintWriter newOut = null;
+		try {
+			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
+			if(newRequest != oldRequest) request.set(newRequest);
+			if(newResponse != oldResponse) {
+				response.set(newResponse);
+				out.set(null);
+			} else {
+				newOut = oldOut;
+			}
+			return target.call();
 		} finally {
 			if(newServletContext != oldServletContext) servletContext.set(oldServletContext);
 			if(newRequest != oldRequest) request.set(oldRequest);
