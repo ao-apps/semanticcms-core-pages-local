@@ -56,7 +56,7 @@ final public class PageContext {
 
 	static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextRunnable {
 		void run() throws ServletException, IOException;
 	}
@@ -85,7 +85,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextCallable<V> extends Callable<V> {
 		@Override
 		V call() throws ServletException, IOException;
@@ -115,7 +115,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextRunnableSkip {
 		void run() throws ServletException, IOException, SkipPageException;
 	}
@@ -156,7 +156,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextCallableSkip<V> extends Callable<V> {
 		@Override
 		V call() throws ServletException, IOException, SkipPageException;
@@ -198,7 +198,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextRunnableSkipE<E extends Throwable> {
 		void run() throws E, ServletException, IOException, SkipPageException;
 	}
@@ -227,7 +227,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextCallableSkipE<V,E extends Exception> extends Callable<V> {
 		@Override
 		V call() throws E, ServletException, IOException, SkipPageException;
@@ -257,7 +257,7 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextRunnableSkipEE<E1 extends Throwable, E2 extends Throwable> {
 		void run() throws E1, E2, ServletException, IOException, SkipPageException;
 	}
@@ -286,8 +286,9 @@ final public class PageContext {
 		}
 	}
 
-	// TODO: Java 1.8: Functional
+	// Java 1.8: Functional
 	public static interface PageContextCallableSkipEE<V,E1 extends Exception, E2 extends Exception> extends Callable<V> {
+		@Override
 		V call() throws E1, E2, ServletException, IOException, SkipPageException;
 	}
 
