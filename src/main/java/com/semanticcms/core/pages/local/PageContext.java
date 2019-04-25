@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -48,13 +48,13 @@ import javax.servlet.jsp.SkipPageException;
  */
 final public class PageContext {
 
-	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<ServletContext>();
+	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 
-	static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
+	static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
 
-	static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
+	static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<>();
 
-	static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
+	static final ThreadLocal<PrintWriter> out = new ThreadLocal<>();
 
 	// Java 1.8: Functional
 	public static interface PageContextRunnable {
