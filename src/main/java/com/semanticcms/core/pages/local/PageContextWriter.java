@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,100 +34,148 @@ import java.util.Locale;
  */
 final public class PageContextWriter {
 
-	public static void write(int c) throws IOException {
-		PageContext.getOut().write(c);
+	public static PrintWriter write(int c) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.write(c);
+		return out;
 	}
 
-	public static void write(char cbuf[]) throws IOException {
-		PageContext.getOut().write(cbuf);
+	public static PrintWriter write(char cbuf[]) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.write(cbuf);
+		return out;
 	}
 
-	public static void write(char cbuf[], int off, int len) throws IOException {
-		PageContext.getOut().write(cbuf, off, len);
+	public static PrintWriter write(char cbuf[], int off, int len) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.write(cbuf, off, len);
+		return out;
 	}
 
-	public static void write(String str) throws IOException {
-		PageContext.getOut().write(str);
+	public static PrintWriter write(String str) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.write(str);
+		return out;
 	}
 
-	public static void write(String str, int off, int len) throws IOException {
-		PageContext.getOut().write(str, off, len);
+	public static PrintWriter write(String str, int off, int len) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.write(str, off, len);
+		return out;
 	}
 
-	public static void print(boolean b) throws IOException {
-		PageContext.getOut().print(b);
+	public static PrintWriter print(boolean b) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(b);
+		return out;
 	}
 
-	public static void print(char c) throws IOException {
-		PageContext.getOut().print(c);
+	public static PrintWriter print(char c) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(c);
+		return out;
 	}
 
-	public static void print(int i) throws IOException {
-		PageContext.getOut().print(i);
+	public static PrintWriter print(int i) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(i);
+		return out;
 	}
 
-	public static void print(long l) throws IOException {
-		PageContext.getOut().print(l);
+	public static PrintWriter print(long l) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(l);
+		return out;
 	}
 
-	public static void print(float f) throws IOException {
-		PageContext.getOut().print(f);
+	public static PrintWriter print(float f) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(f);
+		return out;
 	}
 
-	public static void print(double d) throws IOException {
-		PageContext.getOut().print(d);
+	public static PrintWriter print(double d) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(d);
+		return out;
 	}
 
-	public static void print(char s[]) throws IOException {
-		PageContext.getOut().print(s);
+	public static PrintWriter print(char s[]) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(s);
+		return out;
 	}
 
-	public static void print(String s) throws IOException {
-		PageContext.getOut().print(s);
+	public static PrintWriter print(String s) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(s);
+		return out;
 	}
 
-	public static void print(Object obj) throws IOException {
-		PageContext.getOut().print(obj);
+	public static PrintWriter print(Object obj) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.print(obj);
+		return out;
 	}
 
-	public static void println() throws IOException {
-		PageContext.getOut().println();
+	public static PrintWriter println() throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println();
+		return out;
 	}
 
-	public static void println(boolean x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(boolean x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(char x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(char x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(int x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(int x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(long x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(long x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(float x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(float x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(double x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(double x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(char x[]) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(char x[]) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(String x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(String x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
-	public static void println(Object x) throws IOException {
-		PageContext.getOut().println(x);
+	public static PrintWriter println(Object x) throws IOException {
+		PrintWriter out = PageContext.getOut();
+		out.println(x);
+		return out;
 	}
 
 	public static PrintWriter printf(String format, Object ... args) throws IOException {
