@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,8 +26,8 @@ import com.aoindustries.encoding.MediaType;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.ServletContextCache;
 import com.aoindustries.servlet.http.Dispatcher;
+import com.aoindustries.servlet.http.HttpServletUtil;
 import com.aoindustries.servlet.http.NullHttpServletResponseWrapper;
-import com.aoindustries.servlet.http.ServletUtil;
 import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.Node;
 import com.semanticcms.core.model.Page;
@@ -138,14 +138,14 @@ abstract public class LocalPageRepository implements PageRepository {
 											requestDispatcherPath,
 											dispatcher,
 											// Always capture as "GET" request
-											ServletUtil.METHOD_GET.equals(request.getMethod())
+											HttpServletUtil.METHOD_GET.equals(request.getMethod())
 												// Is already "GET"
 												? request
 												// Wrap to make "GET"
 												: new HttpServletRequestWrapper(request) {
 													@Override
 													public String getMethod() {
-														return ServletUtil.METHOD_GET;
+														return HttpServletUtil.METHOD_GET;
 													}
 												},
 											new NullHttpServletResponseWrapper(response)
