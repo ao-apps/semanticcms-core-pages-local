@@ -26,6 +26,7 @@ import com.aoindustries.encoding.MediaType;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.ServletContextCache;
 import com.aoindustries.servlet.http.Dispatcher;
+import com.aoindustries.servlet.http.Html;
 import com.aoindustries.servlet.http.HttpServletUtil;
 import com.aoindustries.servlet.http.NullHttpServletResponseWrapper;
 import com.aoindustries.util.Tuple2;
@@ -113,55 +114,62 @@ abstract public class LocalPageRepository implements PageRepository {
 				CaptureLevel oldCaptureLevel = CurrentCaptureLevel.getCaptureLevel(request);
 				CaptureContext oldCaptureContext = CaptureContext.getCaptureContext(request);
 				try {
-					// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
-					String oldContentType = response.getContentType();
+					// Set the doctype to html5 for all captures
+					Object oldDocType = request.getAttribute(Html.DocType.class.getName());
 					try {
-						response.setContentType(MediaType.XHTML.getContentType());
-						// Set new capture context
-						CurrentCaptureLevel.setCaptureLevel(request, level);
-						CaptureContext captureContext = new CaptureContext();
-						request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
-						// TODO: Set more "current" for request and response
-						// TODO: Is PageContext useful for this?
-						// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
-						// Include the page resource, discarding any direct output
-						try {
-							// Clear PageContext on include
-							PageContext.newPageContextSkip(
-								null,
-								null,
-								null,
-								new PageContext.PageContextRunnableSkip() {
-									@Override
-									public void run() throws ServletException, IOException, SkipPageException {
-										Dispatcher.include(
-											requestDispatcherPath,
-											dispatcher,
-											// Always capture as "GET" request
-											HttpServletUtil.METHOD_GET.equals(request.getMethod())
-												// Is already "GET"
-												? request
-												// Wrap to make "GET"
-												: new HttpServletRequestWrapper(request) {
-													@Override
-													public String getMethod() {
-														return HttpServletUtil.METHOD_GET;
-													}
-												},
-											new NullHttpServletResponseWrapper(response)
-										);
-									}
+						Html.DocType.set(request, Html.DocType.html5);
+							// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
+							String oldContentType = response.getContentType();
+							try {
+								response.setContentType(MediaType.XHTML.getContentType());
+								// Set new capture context
+								CurrentCaptureLevel.setCaptureLevel(request, level);
+								CaptureContext captureContext = new CaptureContext();
+								request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
+								// TODO: Set more "current" for request and response
+								// TODO: Is PageContext useful for this?
+								// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
+								// Include the page resource, discarding any direct output
+								try {
+									// Clear PageContext on include
+									PageContext.newPageContextSkip(
+										null,
+										null,
+										null,
+										new PageContext.PageContextRunnableSkip() {
+											@Override
+											public void run() throws ServletException, IOException, SkipPageException {
+												Dispatcher.include(
+													requestDispatcherPath,
+													dispatcher,
+													// Always capture as "GET" request
+													HttpServletUtil.METHOD_GET.equals(request.getMethod())
+														// Is already "GET"
+														? request
+														// Wrap to make "GET"
+														: new HttpServletRequestWrapper(request) {
+															@Override
+															public String getMethod() {
+																return HttpServletUtil.METHOD_GET;
+															}
+														},
+													new NullHttpServletResponseWrapper(response)
+												);
+											}
+										}
+									);
+								} catch(SkipPageException e) {
+									// An individual page may throw SkipPageException which only terminates
+									// the capture, not the request overall
 								}
-							);
-						} catch(SkipPageException e) {
-							// An individual page may throw SkipPageException which only terminates
-							// the capture, not the request overall
-						}
-						Page capturedPage = captureContext.getCapturedPage();
-						if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
-						return capturedPage;
+								Page capturedPage = captureContext.getCapturedPage();
+								if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
+								return capturedPage;
+							} finally {
+								if(oldContentType != null) response.setContentType(oldContentType);
+							}
 					} finally {
-						if(oldContentType != null) response.setContentType(oldContentType);
+						request.setAttribute(Html.DocType.class.getName(), oldDocType);
 					}
 				} finally {
 					// Restore previous capture context
