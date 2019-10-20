@@ -118,56 +118,57 @@ abstract public class LocalPageRepository implements PageRepository {
 					Object oldDocType = request.getAttribute(Html.DocType.class.getName());
 					try {
 						Html.DocType.set(request, Html.DocType.html5);
-							// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
-							String oldContentType = response.getContentType();
+						// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
+						String oldContentType = response.getContentType();
+						try {
+							response.setContentType(Html.Serialization.select(servletContext, request).getContentType());
+							response.setCharacterEncoding(Html.ENCODING.name());
+							// Set new capture context
+							CurrentCaptureLevel.setCaptureLevel(request, level);
+							CaptureContext captureContext = new CaptureContext();
+							request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
+							// TODO: Set more "current" for request and response
+							// TODO: Is PageContext useful for this?
+							// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
+							// Include the page resource, discarding any direct output
 							try {
-								response.setContentType(MediaType.XHTML.getContentType());
-								// Set new capture context
-								CurrentCaptureLevel.setCaptureLevel(request, level);
-								CaptureContext captureContext = new CaptureContext();
-								request.setAttribute(CaptureContext.CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
-								// TODO: Set more "current" for request and response
-								// TODO: Is PageContext useful for this?
-								// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
-								// Include the page resource, discarding any direct output
-								try {
-									// Clear PageContext on include
-									PageContext.newPageContextSkip(
-										null,
-										null,
-										null,
-										new PageContext.PageContextRunnableSkip() {
-											@Override
-											public void run() throws ServletException, IOException, SkipPageException {
-												Dispatcher.include(
-													requestDispatcherPath,
-													dispatcher,
-													// Always capture as "GET" request
-													HttpServletUtil.METHOD_GET.equals(request.getMethod())
-														// Is already "GET"
-														? request
-														// Wrap to make "GET"
-														: new HttpServletRequestWrapper(request) {
-															@Override
-															public String getMethod() {
-																return HttpServletUtil.METHOD_GET;
-															}
-														},
-													new NullHttpServletResponseWrapper(response)
-												);
-											}
+								// Clear PageContext on include
+								PageContext.newPageContextSkip(
+									null,
+									null,
+									null,
+									new PageContext.PageContextRunnableSkip() {
+										@Override
+										public void run() throws ServletException, IOException, SkipPageException {
+											Dispatcher.include(
+												requestDispatcherPath,
+												dispatcher,
+												// Always capture as "GET" request
+												HttpServletUtil.METHOD_GET.equals(request.getMethod())
+													// Is already "GET"
+													? request
+													// Wrap to make "GET"
+													: new HttpServletRequestWrapper(request) {
+														@Override
+														public String getMethod() {
+															return HttpServletUtil.METHOD_GET;
+														}
+													},
+												new NullHttpServletResponseWrapper(response)
+											);
 										}
-									);
-								} catch(SkipPageException e) {
-									// An individual page may throw SkipPageException which only terminates
-									// the capture, not the request overall
-								}
-								Page capturedPage = captureContext.getCapturedPage();
-								if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
-								return capturedPage;
-							} finally {
-								if(oldContentType != null) response.setContentType(oldContentType);
+									}
+								);
+							} catch(SkipPageException e) {
+								// An individual page may throw SkipPageException which only terminates
+								// the capture, not the request overall
 							}
+							Page capturedPage = captureContext.getCapturedPage();
+							if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
+							return capturedPage;
+						} finally {
+							if(oldContentType != null) response.setContentType(oldContentType);
+						}
 					} finally {
 						request.setAttribute(Html.DocType.class.getName(), oldDocType);
 					}
