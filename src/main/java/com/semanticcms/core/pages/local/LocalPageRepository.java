@@ -148,18 +148,13 @@ abstract public class LocalPageRepository implements PageRepository {
 					null,
 					null,
 					null,
-					new PageContext.PageContextRunnableSkip() {
-						@Override
-						public void run() throws ServletException, IOException, SkipPageException {
-							Dispatcher.include(
-								requestDispatcherPath,
-								dispatcher,
-								subRequest,
-								// Discard all output
-								new NullHttpServletResponseWrapper(subResponse)
-							);
-						}
-					}
+					() -> Dispatcher.include(
+						requestDispatcherPath,
+						dispatcher,
+						subRequest,
+						// Discard all output
+						new NullHttpServletResponseWrapper(subResponse)
+					)
 				);
 			} catch(SkipPageException e) {
 				// An individual page may throw SkipPageException which only terminates
