@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -124,8 +124,6 @@ final public class PageContext {
 	 * Establishes a new page context.
 	 * This usually does not need to be done directly as creating a page will
 	 * establish the starting page context.
-	 * 
-	 * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
 	 */
 	public static void newPageContextSkip(
 		ServletContext newServletContext,
@@ -166,8 +164,6 @@ final public class PageContext {
 	 * Establishes a new page context.
 	 * This usually does not need to be done directly as creating a page will
 	 * establish the starting page context.
-	 * 
-	 * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
 	 */
 	public static <V> V newPageContextSkip(
 		ServletContext newServletContext,

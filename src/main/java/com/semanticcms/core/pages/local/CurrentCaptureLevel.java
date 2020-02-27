@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,18 +30,18 @@ import javax.servlet.ServletRequest;
  */
 public class CurrentCaptureLevel {
 
-	private static final String CAPTURE_LEVEL_REQUEST_ATTRIBUTE_NAME = CurrentCaptureLevel.class.getName() + ".captureLevel";
+	private static final String CAPTURE_LEVEL_REQUEST_ATTRIBUTE = CurrentCaptureLevel.class.getName() + ".captureLevel";
 
 	/**
 	 * Gets the capture level or {@link CaptureLevel#BODY} if none occurring.
 	 */
 	public static CaptureLevel getCaptureLevel(ServletRequest request) {
-		CaptureLevel captureLevel = (CaptureLevel)request.getAttribute(CAPTURE_LEVEL_REQUEST_ATTRIBUTE_NAME);
+		CaptureLevel captureLevel = (CaptureLevel)request.getAttribute(CAPTURE_LEVEL_REQUEST_ATTRIBUTE);
 		return captureLevel == null ? CaptureLevel.BODY : captureLevel;
 	}
 
 	public static void setCaptureLevel(ServletRequest request, CaptureLevel level) {
-		request.setAttribute(CAPTURE_LEVEL_REQUEST_ATTRIBUTE_NAME, level);
+		request.setAttribute(CAPTURE_LEVEL_REQUEST_ATTRIBUTE, level);
 	}
 
 	/** Make no instances */

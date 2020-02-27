@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,13 +31,13 @@ import javax.servlet.ServletRequest;
  */
 public class CaptureContext {
 
-	public static final String CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME = CaptureContext.class.getName();
+	public static final String REQUEST_ATTRIBUTE = CaptureContext.class.getName();
 
 	/**
 	 * Gets the capture context or <code>null</code> if none occurring.
 	 */
 	public static CaptureContext getCaptureContext(ServletRequest request) {
-		return (CaptureContext)request.getAttribute(CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME);
+		return (CaptureContext)request.getAttribute(REQUEST_ATTRIBUTE);
 	}
 
 	private Page capturedPage;

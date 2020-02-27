@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,17 +31,17 @@ import javax.servlet.ServletRequest;
 final public class CurrentPage {
 
 	// Cleared and restored on request in CapturePage
-	private static final String CURRENT_PAGE_REQUEST_ATTRIBUTE_NAME = /*PageTag.class.getName()+".*/ "currentPage";
+	public static final String REQUEST_ATTRIBUTE = /*PageTag.class.getName()+".*/ "currentPage";
 
 	/**
 	 * Gets the currentPage or <code>null</code> if not inside a <code>PageTag</code>.
 	 */
 	public static Page getCurrentPage(ServletRequest request) {
-		return (Page)request.getAttribute(CURRENT_PAGE_REQUEST_ATTRIBUTE_NAME);
+		return (Page)request.getAttribute(REQUEST_ATTRIBUTE);
 	}
 
 	public static void setCurrentPage(ServletRequest request, Page page) {
-		request.setAttribute(CURRENT_PAGE_REQUEST_ATTRIBUTE_NAME, page);
+		request.setAttribute(REQUEST_ATTRIBUTE, page);
 	}
 
 	/**
