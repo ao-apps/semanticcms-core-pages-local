@@ -67,7 +67,7 @@ abstract public class LocalPageRepository implements PageRepository {
 
 	protected LocalPageRepository(ServletContext servletContext, Path path) {
 		this.servletContext = servletContext;
-		this.cache = ServletContextCache.getCache(servletContext);
+		this.cache = ServletContextCache.getInstance(servletContext);
 		this.path = path;
 		String repositoryPathStr = path.toString();
 		this.prefix = repositoryPathStr.equals("/") ? "" : repositoryPathStr;
