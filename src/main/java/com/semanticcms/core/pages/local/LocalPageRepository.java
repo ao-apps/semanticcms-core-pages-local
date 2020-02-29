@@ -121,7 +121,7 @@ abstract public class LocalPageRepository implements PageRepository {
 			if(response instanceof IHttpServletSubResponse) {
 				subResponse = (IHttpServletSubResponse)response;
 			} else {
-				subResponse = new HttpServletSubResponseWrapper(response, ServletTempFileContext.getTempFileContext(request));
+				subResponse = new HttpServletSubResponseWrapper(response, ServletTempFileContext.getInstance(request));
 			}
 			// Clear request values that break captures
 			CurrentNode.setCurrentNode(subRequest, null);
