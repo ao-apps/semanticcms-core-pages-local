@@ -37,7 +37,7 @@ import com.aoindustries.servlet.subrequest.HttpServletSubRequestWrapper;
 import com.aoindustries.servlet.subrequest.HttpServletSubResponseWrapper;
 import com.aoindustries.servlet.subrequest.IHttpServletSubRequest;
 import com.aoindustries.servlet.subrequest.IHttpServletSubResponse;
-import com.aoindustries.tempfiles.servlet.ServletTempFileContext;
+import com.aoindustries.tempfiles.servlet.TempFileContextEE;
 import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.pages.CaptureLevel;
@@ -121,7 +121,7 @@ abstract public class LocalPageRepository implements PageRepository {
 			if(response instanceof IHttpServletSubResponse) {
 				subResponse = (IHttpServletSubResponse)response;
 			} else {
-				subResponse = new HttpServletSubResponseWrapper(response, ServletTempFileContext.getInstance(request));
+				subResponse = new HttpServletSubResponseWrapper(response, TempFileContextEE.get(request));
 			}
 			// Clear request values that break captures
 			CurrentNode.setCurrentNode(subRequest, null);
