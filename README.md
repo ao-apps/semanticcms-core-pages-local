@@ -30,7 +30,7 @@ Support for [SemanticCMS](https://github.com/aoindustries/semanticcms) pages pro
 * [Project Home](https://semanticcms.com/core/pages/local/)
 * [Changelog](https://semanticcms.com/core/pages/local/changelog)
 * [API Docs](https://semanticcms.com/core/pages/local/apidocs/)
-* [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.semanticcms%22%20AND%20a:%22semanticcms-core-pages-local%22)
+* [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-core-pages-local)
 * [GitHub](https://github.com/aoindustries/semanticcms-core-pages-local)
 
 ## Contact Us
