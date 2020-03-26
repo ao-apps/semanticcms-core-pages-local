@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.pages.local;
 
-import com.aoindustries.encoding.EncodingContext;
+import com.aoindustries.encoding.Doctype;
 import com.aoindustries.encoding.Serialization;
 import com.aoindustries.encoding.servlet.DoctypeEE;
 import com.aoindustries.encoding.servlet.SerializationEE;
@@ -131,7 +131,7 @@ abstract public class LocalPageRepository implements PageRepository {
 			SerializationEE.set(subRequest, currentSerialization);
 			ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), Html.ENCODING);
 			// Set the default doctype for all captures
-			DoctypeEE.set(subRequest, EncodingContext.DEFAULT_DOCTYPE);
+			DoctypeEE.set(subRequest, Doctype.DEFAULT);
 			// Set new capture context
 			CurrentCaptureLevel.setCaptureLevel(subRequest, level);
 			CaptureContext captureContext = new CaptureContext();
