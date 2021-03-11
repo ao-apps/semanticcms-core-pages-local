@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -194,12 +194,18 @@ final public class PageContext {
 		}
 	}
 
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
 	@FunctionalInterface
-	public static interface PageContextRunnableSkipE<E extends Throwable> {
-		void run() throws E, ServletException, IOException, SkipPageException;
+	public static interface PageContextRunnableSkipE<Ex extends Throwable> {
+		void run() throws Ex, ServletException, IOException, SkipPageException;
 	}
 
-	public static <E extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<E> target) throws E, ServletException, IOException, SkipPageException {
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
+	public static <Ex extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<Ex> target) throws Ex, ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -223,13 +229,21 @@ final public class PageContext {
 		}
 	}
 
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
 	@FunctionalInterface
-	public static interface PageContextCallableSkipE<V,E extends Exception> extends Callable<V> {
+	// TODO: Ex extends Throwable
+	public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
 		@Override
-		V call() throws E, ServletException, IOException, SkipPageException;
+		V call() throws Ex, ServletException, IOException, SkipPageException;
 	}
 
-	public static <V,E extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V,E> target) throws E, ServletException, IOException, SkipPageException {
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
+	// TODO: Ex extends Throwable
+	public static <V, Ex extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V, Ex> target) throws Ex, ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -258,7 +272,7 @@ final public class PageContext {
 		void run() throws E1, E2, ServletException, IOException, SkipPageException;
 	}
 
-	public static <E1 extends Throwable, E2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<E1,E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
+	public static <E1 extends Throwable, E2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<E1, E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();
@@ -282,13 +296,14 @@ final public class PageContext {
 		}
 	}
 
+	// TODO: Extend Throwable
 	@FunctionalInterface
-	public static interface PageContextCallableSkipEE<V,E1 extends Exception, E2 extends Exception> extends Callable<V> {
+	public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
 		@Override
-		V call() throws E1, E2, ServletException, IOException, SkipPageException;
+		V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
 	}
 
-	public static <V,E1 extends Exception, E2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V,E1,E2> target) throws E1, E2, ServletException, IOException, SkipPageException {
+	public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V, Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
 		final ServletContext oldServletContext = servletContext.get();
 		final HttpServletRequest oldRequest = request.get();
 		final HttpServletResponse oldResponse = response.get();

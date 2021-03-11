@@ -172,5 +172,5 @@ abstract public class LocalPageRepository implements PageRepository {
 	 * Gets the path for the {@link RequestDispatcher} for the given path or {@code null}
 	 * if the page is known to not exist.
 	 */
-	abstract protected Tuple2<String,RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
+	abstract protected Tuple2<String, RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
 }
