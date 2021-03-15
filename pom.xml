@@ -105,11 +105,6 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-encoding-servlet</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-fluent-html</artifactId><classifier>javadoc</classifier>
-											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-fluent-html</outputDirectory>
-										</artifactItem>
-										<artifactItem>
 											<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
 											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-lang</outputDirectory>
@@ -168,10 +163,6 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 								<offlineLink>
 									<url>https://aoindustries.com/ao-encoding/servlet/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-encoding-servlet</location>
-								</offlineLink>
-								<offlineLink>
-									<url>https://aoindustries.com/ao-fluent-html/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-fluent-html</location>
 								</offlineLink>
 								<offlineLink>
 									<url>https://aoindustries.com/ao-lang/apidocs/</url>
@@ -233,9 +224,6 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-encoding-servlet</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-fluent-html</artifactId><version>0.4.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>4.17.0${POST-SNAPSHOT}</version>
@@ -301,9 +289,6 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-encoding-servlet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-fluent-html</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId>

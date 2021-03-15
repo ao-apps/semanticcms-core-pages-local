@@ -26,7 +26,6 @@ import com.aoindustries.encoding.Doctype;
 import com.aoindustries.encoding.Serialization;
 import com.aoindustries.encoding.servlet.DoctypeEE;
 import com.aoindustries.encoding.servlet.SerializationEE;
-import com.aoindustries.html.Document;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.ServletContextCache;
 import com.aoindustries.servlet.ServletUtil;
@@ -43,6 +42,8 @@ import com.semanticcms.core.model.Page;
 import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.pages.PageRepository;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -55,6 +56,9 @@ import javax.servlet.jsp.SkipPageException;
  */
 abstract public class LocalPageRepository implements PageRepository {
 
+
+	// Matches AnyDocument.ENCODING
+	public static final Charset ENCODING = StandardCharsets.UTF_8;
 
 	// TODO: A way to register the current capture level, page, node, request, ...
 
@@ -129,7 +133,7 @@ abstract public class LocalPageRepository implements PageRepository {
 			// Set the content type
 			Serialization currentSerialization = SerializationEE.getDefault(servletContext, subRequest);
 			SerializationEE.set(subRequest, currentSerialization);
-			ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), Document.ENCODING);
+			ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), /*AnyDocument.*/ENCODING);
 			// Set the default doctype for all captures
 			DoctypeEE.set(subRequest, Doctype.DEFAULT);
 			// Set new capture context
