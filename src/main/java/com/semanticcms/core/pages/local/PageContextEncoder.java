@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.pages.local;
 
-import com.aoindustries.encoding.TextInXhtmlAttributeEncoder;
-import com.aoindustries.encoding.TextInXhtmlEncoder;
+import com.aoapps.encoding.TextInXhtmlAttributeEncoder;
+import com.aoapps.encoding.TextInXhtmlEncoder;
 import java.io.IOException;
 import java.io.PrintWriter;
 
