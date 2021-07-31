@@ -178,7 +178,7 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId>
 						<configuration>
-							<offlineLinks>
+							<offlineLinks combine.children="append">
 								<!-- Direct -->
 								<offlineLink>
 									<url>https://oss.aoapps.com/encoding/apidocs/</url>
@@ -212,8 +212,8 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 									<url>https://oss.aoapps.com/tempfiles/servlet/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles-servlet</location>
 								</offlineLink>
-								<!-- Java EE: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
-								<!-- Java EE: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
+								<!-- ao-javadoc-offline: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
+								<!-- ao-javadoc-offline: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
 								<offlineLink>
 									<url>https://semanticcms.com/core/model/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.semanticcms/semanticcms-core-model</location>
@@ -221,16 +221,6 @@ along with semanticcms-core-pages-local.  If not, see <http://www.gnu.org/licens
 								<offlineLink>
 									<url>https://semanticcms.com/core/pages/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.semanticcms/semanticcms-core-pages</location>
-								</offlineLink>
-								<!-- Java SE -->
-								<offlineLink>
-									<url>${javadoc.link.javase}</url>
-									<location>${project.build.directory}/offlineLinks/com/aoapps/javadoc/offline/javase/${javase.release}</location>
-								</offlineLink>
-								<!-- Java EE -->
-								<offlineLink>
-									<url>${javadoc.link.javaee}</url>
-									<location>${project.build.directory}/offlineLinks/com/aoapps/javadoc/offline/javaee/${javaee.version}</location>
 								</offlineLink>
 							</offlineLinks>
 						</configuration>
