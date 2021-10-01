@@ -23,6 +23,7 @@
 package com.semanticcms.core.pages.local;
 
 import com.aoapps.lang.NullArgumentException;
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.core.model.Page;
 import javax.servlet.ServletRequest;
 
@@ -31,13 +32,14 @@ import javax.servlet.ServletRequest;
  */
 public class CaptureContext {
 
-	public static final String REQUEST_ATTRIBUTE = CaptureContext.class.getName();
+	static final ScopeEE.Request.Attribute<CaptureContext> REQUEST_ATTRIBUTE =
+		ScopeEE.REQUEST.attribute(CaptureContext.class.getName());
 
 	/**
 	 * Gets the capture context or <code>null</code> if none occurring.
 	 */
 	public static CaptureContext getCaptureContext(ServletRequest request) {
-		return (CaptureContext)request.getAttribute(REQUEST_ATTRIBUTE);
+		return REQUEST_ATTRIBUTE.context(request).get();
 	}
 
 	private Page capturedPage;

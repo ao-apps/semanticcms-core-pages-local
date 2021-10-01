@@ -139,7 +139,7 @@ abstract public class LocalPageRepository implements PageRepository {
 			// Set new capture context
 			CurrentCaptureLevel.setCaptureLevel(subRequest, level);
 			CaptureContext captureContext = new CaptureContext();
-			subRequest.setAttribute(CaptureContext.REQUEST_ATTRIBUTE, captureContext);
+			CaptureContext.REQUEST_ATTRIBUTE.context(subRequest).set(captureContext);
 			// Always capture as "GET" request
 			subRequest.setMethod(HttpServletUtil.METHOD_GET);
 			// TODO: Set more "current" for request and response

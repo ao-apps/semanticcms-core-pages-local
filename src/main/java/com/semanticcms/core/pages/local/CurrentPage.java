@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.pages.local;
 
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.core.model.Page;
 import javax.servlet.ServletRequest;
 
@@ -30,18 +31,21 @@ import javax.servlet.ServletRequest;
  */
 final public class CurrentPage {
 
-	// Cleared and restored on request in CapturePage
-	public static final String REQUEST_ATTRIBUTE = /*PageTag.class.getName()+".*/ "currentPage";
+	/**
+	 * Cleared and restored on request in CapturePage
+	 */
+	public static final ScopeEE.Request.Attribute<Page> REQUEST_ATTRIBUTE =
+		ScopeEE.REQUEST.attribute(/*PageTag.class.getName()+".*/ "currentPage");
 
 	/**
 	 * Gets the currentPage or <code>null</code> if not inside a <code>PageTag</code>.
 	 */
 	public static Page getCurrentPage(ServletRequest request) {
-		return (Page)request.getAttribute(REQUEST_ATTRIBUTE);
+		return REQUEST_ATTRIBUTE.context(request).get();
 	}
 
 	public static void setCurrentPage(ServletRequest request, Page page) {
-		request.setAttribute(REQUEST_ATTRIBUTE, page);
+		REQUEST_ATTRIBUTE.context(request).set(page);
 	}
 
 	/**
