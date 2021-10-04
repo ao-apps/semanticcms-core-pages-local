@@ -33,7 +33,7 @@ import java.io.PrintWriter;
  * @see  PageContext
  * @see  PrintWriter
  */
-final public class PageContextEncoder {
+public final class PageContextEncoder {
 
 	public static void encodeTextInXhtmlAttribute(char ch) throws IOException {
 		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(ch, PageContext.getOut());

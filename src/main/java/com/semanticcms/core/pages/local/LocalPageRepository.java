@@ -54,7 +54,7 @@ import javax.servlet.jsp.SkipPageException;
 /**
  * Support for accessing pages from the local {@link ServletContext}.
  */
-abstract public class LocalPageRepository implements PageRepository {
+public abstract class LocalPageRepository implements PageRepository {
 
 
 	// Matches AnyDocument.ENCODING
@@ -64,10 +64,10 @@ abstract public class LocalPageRepository implements PageRepository {
 
 	// TODO: Then auto resolve these before calling a subclass implementation of capturePage that takes additional parameters.
 
-	final protected ServletContext servletContext;
-	final protected ServletContextCache cache;
-	final protected Path path;
-	final protected String prefix;
+	protected final ServletContext servletContext;
+	protected final ServletContextCache cache;
+	protected final Path path;
+	protected final String prefix;
 
 	protected LocalPageRepository(ServletContext servletContext, Path path) {
 		this.servletContext = servletContext;
@@ -99,7 +99,7 @@ abstract public class LocalPageRepository implements PageRepository {
 	 * Must generate a toString based on the repository type and prefix
 	 */
 	@Override
-	abstract public String toString();
+	public abstract String toString();
 
 	@Override
 	public boolean isAvailable() {
@@ -176,5 +176,5 @@ abstract public class LocalPageRepository implements PageRepository {
 	 * Gets the path for the {@link RequestDispatcher} for the given path or {@code null}
 	 * if the page is known to not exist.
 	 */
-	abstract protected Tuple2<String, RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
+	protected abstract Tuple2<String, RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
 }

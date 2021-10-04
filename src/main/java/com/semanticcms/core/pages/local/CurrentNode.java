@@ -29,7 +29,7 @@ import javax.servlet.ServletRequest;
 /**
  * Tracking of the current node during request processing and capturing.
  */
-final public class CurrentNode {
+public final class CurrentNode {
 
 	/**
 	 * Cleared and restored on request in CapturePage

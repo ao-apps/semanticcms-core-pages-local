@@ -46,7 +46,7 @@ import javax.servlet.jsp.SkipPageException;
  *
  * @see  PageContextWriter
  */
-final public class PageContext {
+public final class PageContext {
 
 	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 

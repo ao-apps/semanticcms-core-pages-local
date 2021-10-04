@@ -29,7 +29,7 @@ import javax.servlet.ServletRequest;
 /**
  * Tracking of the current page during request processing and capturing.
  */
-final public class CurrentPage {
+public final class CurrentPage {
 
 	/**
 	 * Cleared and restored on request in CapturePage
