@@ -40,13 +40,13 @@ public final class PageContextWriter {
 		return out;
 	}
 
-	public static PrintWriter write(char cbuf[]) throws IOException {
+	public static PrintWriter write(char[] cbuf) throws IOException {
 		PrintWriter out = PageContext.getOut();
 		out.write(cbuf);
 		return out;
 	}
 
-	public static PrintWriter write(char cbuf[], int off, int len) throws IOException {
+	public static PrintWriter write(char[] cbuf, int off, int len) throws IOException {
 		PrintWriter out = PageContext.getOut();
 		out.write(cbuf, off, len);
 		return out;
@@ -100,7 +100,7 @@ public final class PageContextWriter {
 		return out;
 	}
 
-	public static PrintWriter print(char s[]) throws IOException {
+	public static PrintWriter print(char[] s) throws IOException {
 		PrintWriter out = PageContext.getOut();
 		out.print(s);
 		return out;
@@ -160,7 +160,7 @@ public final class PageContextWriter {
 		return out;
 	}
 
-	public static PrintWriter println(char x[]) throws IOException {
+	public static PrintWriter println(char[] x) throws IOException {
 		PrintWriter out = PageContext.getOut();
 		out.println(x);
 		return out;
