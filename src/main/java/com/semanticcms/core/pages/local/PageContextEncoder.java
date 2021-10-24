@@ -47,12 +47,12 @@ public final class PageContextEncoder {
 		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cbuf, start, len, PageContext.getOut());
 	}
 
-	public static void encodeTextInXhtmlAttribute(CharSequence S) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(S, PageContext.getOut());
+	public static void encodeTextInXhtmlAttribute(CharSequence cs) throws IOException {
+		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, PageContext.getOut());
 	}
 
-	public static void encodeTextInXhtmlAttribute(CharSequence S, int start, int end) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(S, start, end, PageContext.getOut());
+	public static void encodeTextInXhtmlAttribute(CharSequence cs, int start, int end) throws IOException {
+		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, start, end, PageContext.getOut());
 	}
 
 	public static void encodeTextInXhtml(char ch) throws IOException {
@@ -67,12 +67,12 @@ public final class PageContextEncoder {
 		TextInXhtmlEncoder.encodeTextInXhtml(cbuf, start, len, PageContext.getOut());
 	}
 
-	public static void encodeTextInXhtml(CharSequence S) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(S, PageContext.getOut());
+	public static void encodeTextInXhtml(CharSequence cs) throws IOException {
+		TextInXhtmlEncoder.encodeTextInXhtml(cs, PageContext.getOut());
 	}
 
-	public static void encodeTextInXhtml(CharSequence S, int start, int end) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(S, start, end, PageContext.getOut());
+	public static void encodeTextInXhtml(CharSequence cs, int start, int end) throws IOException {
+		TextInXhtmlEncoder.encodeTextInXhtml(cs, start, end, PageContext.getOut());
 	}
 
 	/**
