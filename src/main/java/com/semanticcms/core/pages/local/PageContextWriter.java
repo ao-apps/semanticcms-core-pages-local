@@ -32,7 +32,10 @@ import java.util.Locale;
  * @see  PageContext
  * @see  PrintWriter
  */
-public final class PageContextWriter {
+public abstract class PageContextWriter {
+
+	/** Make no instances. */
+	private PageContextWriter() {throw new AssertionError();}
 
 	public static PrintWriter write(int c) throws IOException {
 		PrintWriter out = PageContext.getOut();
@@ -204,11 +207,5 @@ public final class PageContextWriter {
 
 	public static PrintWriter append(char c) throws IOException {
 		return PageContext.getOut().append(c);
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private PageContextWriter() {
 	}
 }

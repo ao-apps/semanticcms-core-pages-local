@@ -46,7 +46,14 @@ import javax.servlet.jsp.SkipPageException;
  *
  * @see  PageContextWriter
  */
-public final class PageContext {
+public abstract class PageContext {
+
+	/**
+	 * Make no instances, all is done through thread locals.
+	 */
+	private PageContext() {
+		throw new AssertionError();
+	}
 
 	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 
@@ -468,11 +475,5 @@ public final class PageContext {
 			out.set(o);
 		}
 		return o;
-	}
-
-	/**
-	 * Make no instances, all is done through thread locals.
-	 */
-	private PageContext() {
 	}
 }

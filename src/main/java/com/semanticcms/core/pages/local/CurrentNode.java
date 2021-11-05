@@ -29,7 +29,10 @@ import javax.servlet.ServletRequest;
 /**
  * Tracking of the current node during request processing and capturing.
  */
-public final class CurrentNode {
+public abstract class CurrentNode {
+
+	/** Make no instances. */
+	private CurrentNode() {throw new AssertionError();}
 
 	/**
 	 * Cleared and restored on request in CapturePage
@@ -42,11 +45,5 @@ public final class CurrentNode {
 
 	public static void setCurrentNode(ServletRequest request, Node node) {
 		REQUEST_ATTRIBUTE.context(request).set(node);
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private CurrentNode() {
 	}
 }

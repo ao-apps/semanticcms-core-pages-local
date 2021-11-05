@@ -29,7 +29,10 @@ import javax.servlet.ServletRequest;
 /**
  * The current capture mode.
  */
-public class CurrentCaptureLevel {
+public abstract class CurrentCaptureLevel {
+
+	/** Make no instances. */
+	private CurrentCaptureLevel() {throw new AssertionError();}
 
 	private static final ScopeEE.Request.Attribute<CaptureLevel> CAPTURE_LEVEL_REQUEST_ATTRIBUTE =
 		ScopeEE.REQUEST.attribute(CurrentCaptureLevel.class.getName() + ".captureLevel");
@@ -44,7 +47,4 @@ public class CurrentCaptureLevel {
 	public static void setCaptureLevel(ServletRequest request, CaptureLevel level) {
 		CAPTURE_LEVEL_REQUEST_ATTRIBUTE.context(request).set(level);
 	}
-
-	/** Make no instances */
-	private CurrentCaptureLevel() {}
 }

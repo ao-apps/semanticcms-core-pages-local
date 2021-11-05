@@ -29,7 +29,10 @@ import javax.servlet.ServletRequest;
 /**
  * Tracking of the current page during request processing and capturing.
  */
-public final class CurrentPage {
+public abstract class CurrentPage {
+
+	/** Make no instances. */
+	private CurrentPage() {throw new AssertionError();}
 
 	/**
 	 * Cleared and restored on request in CapturePage
@@ -46,11 +49,5 @@ public final class CurrentPage {
 
 	public static void setCurrentPage(ServletRequest request, Page page) {
 		REQUEST_ATTRIBUTE.context(request).set(page);
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private CurrentPage() {
 	}
 }

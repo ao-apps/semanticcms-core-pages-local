@@ -33,7 +33,10 @@ import java.io.PrintWriter;
  * @see  PageContext
  * @see  PrintWriter
  */
-public final class PageContextEncoder {
+public abstract class PageContextEncoder {
+
+	/** Make no instances. */
+	private PageContextEncoder() {throw new AssertionError();}
 
 	public static void encodeTextInXhtmlAttribute(char ch) throws IOException {
 		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(ch, PageContext.getOut());
@@ -73,11 +76,5 @@ public final class PageContextEncoder {
 
 	public static void encodeTextInXhtml(CharSequence cs, int start, int end) throws IOException {
 		TextInXhtmlEncoder.encodeTextInXhtml(cs, start, end, PageContext.getOut());
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private PageContextEncoder() {
 	}
 }
