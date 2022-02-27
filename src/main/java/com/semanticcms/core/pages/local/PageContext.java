@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -46,14 +46,10 @@ import javax.servlet.jsp.SkipPageException;
  *
  * @see  PageContextWriter
  */
-public abstract class PageContext {
+public final class PageContext {
 
-	/**
-	 * Make no instances, all is done through thread locals.
-	 */
-	private PageContext() {
-		throw new AssertionError();
-	}
+	/** Make no instances, all is done through thread locals. */
+	private PageContext() {throw new AssertionError();}
 
 	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 

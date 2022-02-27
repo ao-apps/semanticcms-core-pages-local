@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2019, 2021  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,7 +32,7 @@ import java.util.Locale;
  * @see  PageContext
  * @see  PrintWriter
  */
-public abstract class PageContextWriter {
+public final class PageContextWriter {
 
 	/** Make no instances. */
 	private PageContextWriter() {throw new AssertionError();}
