@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.semanticcms.core.pages.local;
 
 import com.aoapps.servlet.attribute.ScopeEE;
