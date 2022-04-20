@@ -32,20 +32,22 @@ import javax.servlet.ServletRequest;
  */
 public final class CurrentCaptureLevel {
 
-	/** Make no instances. */
-	private CurrentCaptureLevel() {throw new AssertionError();}
+  /** Make no instances. */
+  private CurrentCaptureLevel() {
+    throw new AssertionError();
+  }
 
-	private static final ScopeEE.Request.Attribute<CaptureLevel> CAPTURE_LEVEL_REQUEST_ATTRIBUTE =
-		ScopeEE.REQUEST.attribute(CurrentCaptureLevel.class.getName() + ".captureLevel");
+  private static final ScopeEE.Request.Attribute<CaptureLevel> CAPTURE_LEVEL_REQUEST_ATTRIBUTE =
+    ScopeEE.REQUEST.attribute(CurrentCaptureLevel.class.getName() + ".captureLevel");
 
-	/**
-	 * Gets the capture level or {@link CaptureLevel#BODY} if none occurring.
-	 */
-	public static CaptureLevel getCaptureLevel(ServletRequest request) {
-		return CAPTURE_LEVEL_REQUEST_ATTRIBUTE.context(request).getOrDefault(CaptureLevel.BODY);
-	}
+  /**
+   * Gets the capture level or {@link CaptureLevel#BODY} if none occurring.
+   */
+  public static CaptureLevel getCaptureLevel(ServletRequest request) {
+    return CAPTURE_LEVEL_REQUEST_ATTRIBUTE.context(request).getOrDefault(CaptureLevel.BODY);
+  }
 
-	public static void setCaptureLevel(ServletRequest request, CaptureLevel level) {
-		CAPTURE_LEVEL_REQUEST_ATTRIBUTE.context(request).set(level);
-	}
+  public static void setCaptureLevel(ServletRequest request, CaptureLevel level) {
+    CAPTURE_LEVEL_REQUEST_ATTRIBUTE.context(request).set(level);
+  }
 }

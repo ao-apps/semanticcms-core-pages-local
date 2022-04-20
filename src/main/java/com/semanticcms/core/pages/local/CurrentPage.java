@@ -32,23 +32,25 @@ import javax.servlet.ServletRequest;
  */
 public final class CurrentPage {
 
-	/** Make no instances. */
-	private CurrentPage() {throw new AssertionError();}
+  /** Make no instances. */
+  private CurrentPage() {
+    throw new AssertionError();
+  }
 
-	/**
-	 * Cleared and restored on request in CapturePage
-	 */
-	public static final ScopeEE.Request.Attribute<Page> REQUEST_ATTRIBUTE =
-		ScopeEE.REQUEST.attribute(/*PageTag.class.getName()+".*/ "currentPage");
+  /**
+   * Cleared and restored on request in CapturePage
+   */
+  public static final ScopeEE.Request.Attribute<Page> REQUEST_ATTRIBUTE =
+    ScopeEE.REQUEST.attribute(/*PageTag.class.getName()+".*/ "currentPage");
 
-	/**
-	 * Gets the currentPage or <code>null</code> if not inside a <code>PageTag</code>.
-	 */
-	public static Page getCurrentPage(ServletRequest request) {
-		return REQUEST_ATTRIBUTE.context(request).get();
-	}
+  /**
+   * Gets the currentPage or <code>null</code> if not inside a <code>PageTag</code>.
+   */
+  public static Page getCurrentPage(ServletRequest request) {
+    return REQUEST_ATTRIBUTE.context(request).get();
+  }
 
-	public static void setCurrentPage(ServletRequest request, Page page) {
-		REQUEST_ATTRIBUTE.context(request).set(page);
-	}
+  public static void setCurrentPage(ServletRequest request, Page page) {
+    REQUEST_ATTRIBUTE.context(request).set(page);
+  }
 }

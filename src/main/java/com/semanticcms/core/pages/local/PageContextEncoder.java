@@ -36,46 +36,48 @@ import java.io.PrintWriter;
  */
 public final class PageContextEncoder {
 
-	/** Make no instances. */
-	private PageContextEncoder() {throw new AssertionError();}
+  /** Make no instances. */
+  private PageContextEncoder() {
+    throw new AssertionError();
+  }
 
-	public static void encodeTextInXhtmlAttribute(char ch) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(ch, PageContext.getOut());
-	}
+  public static void encodeTextInXhtmlAttribute(char ch) throws IOException {
+    TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(ch, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtmlAttribute(char[] cbuf) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cbuf, PageContext.getOut());
-	}
+  public static void encodeTextInXhtmlAttribute(char[] cbuf) throws IOException {
+    TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cbuf, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtmlAttribute(char[] cbuf, int start, int len) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cbuf, start, len, PageContext.getOut());
-	}
+  public static void encodeTextInXhtmlAttribute(char[] cbuf, int start, int len) throws IOException {
+    TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cbuf, start, len, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtmlAttribute(CharSequence cs) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, PageContext.getOut());
-	}
+  public static void encodeTextInXhtmlAttribute(CharSequence cs) throws IOException {
+    TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtmlAttribute(CharSequence cs, int start, int end) throws IOException {
-		TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, start, end, PageContext.getOut());
-	}
+  public static void encodeTextInXhtmlAttribute(CharSequence cs, int start, int end) throws IOException {
+    TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute(cs, start, end, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtml(char ch) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(ch, PageContext.getOut());
-	}
+  public static void encodeTextInXhtml(char ch) throws IOException {
+    TextInXhtmlEncoder.encodeTextInXhtml(ch, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtml(char[] cbuf) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(cbuf, PageContext.getOut());
-	}
+  public static void encodeTextInXhtml(char[] cbuf) throws IOException {
+    TextInXhtmlEncoder.encodeTextInXhtml(cbuf, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtml(char[] cbuf, int start, int len) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(cbuf, start, len, PageContext.getOut());
-	}
+  public static void encodeTextInXhtml(char[] cbuf, int start, int len) throws IOException {
+    TextInXhtmlEncoder.encodeTextInXhtml(cbuf, start, len, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtml(CharSequence cs) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(cs, PageContext.getOut());
-	}
+  public static void encodeTextInXhtml(CharSequence cs) throws IOException {
+    TextInXhtmlEncoder.encodeTextInXhtml(cs, PageContext.getOut());
+  }
 
-	public static void encodeTextInXhtml(CharSequence cs, int start, int end) throws IOException {
-		TextInXhtmlEncoder.encodeTextInXhtml(cs, start, end, PageContext.getOut());
-	}
+  public static void encodeTextInXhtml(CharSequence cs, int start, int end) throws IOException {
+    TextInXhtmlEncoder.encodeTextInXhtml(cs, start, end, PageContext.getOut());
+  }
 }

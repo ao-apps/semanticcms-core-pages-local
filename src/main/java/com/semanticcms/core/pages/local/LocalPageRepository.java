@@ -58,124 +58,128 @@ import javax.servlet.jsp.SkipPageException;
 public abstract class LocalPageRepository implements PageRepository {
 
 
-	// Matches AnyDocument.ENCODING
-	public static final Charset ENCODING = StandardCharsets.UTF_8;
+  // Matches AnyDocument.ENCODING
+  public static final Charset ENCODING = StandardCharsets.UTF_8;
 
-	// TODO: A way to register the current capture level, page, node, request, ...
+  // TODO: A way to register the current capture level, page, node, request, ...
 
-	// TODO: Then auto resolve these before calling a subclass implementation of capturePage that takes additional parameters.
+  // TODO: Then auto resolve these before calling a subclass implementation of capturePage that takes additional parameters.
 
-	protected final ServletContext servletContext;
-	protected final ServletContextCache cache;
-	protected final Path path;
-	protected final String prefix;
+  protected final ServletContext servletContext;
+  protected final ServletContextCache cache;
+  protected final Path path;
+  protected final String prefix;
 
-	protected LocalPageRepository(ServletContext servletContext, Path path) {
-		this.servletContext = servletContext;
-		this.cache = ServletContextCache.getInstance(servletContext);
-		this.path = path;
-		String repositoryPathStr = path.toString();
-		this.prefix = repositoryPathStr.equals("/") ? "" : repositoryPathStr;
-	}
+  protected LocalPageRepository(ServletContext servletContext, Path path) {
+    this.servletContext = servletContext;
+    this.cache = ServletContextCache.getInstance(servletContext);
+    this.path = path;
+    String repositoryPathStr = path.toString();
+    this.prefix = repositoryPathStr.equals("/") ? "" : repositoryPathStr;
+  }
 
-	public ServletContext getServletContext() {
-		return servletContext;
-	}
+  public ServletContext getServletContext() {
+    return servletContext;
+  }
 
-	/**
-	 * Gets the path, without any trailing slash except for "/".
-	 */
-	public Path getPath() {
-		return path;
-	}
+  /**
+   * Gets the path, without any trailing slash except for "/".
+   */
+  public Path getPath() {
+    return path;
+  }
 
-	/**
-	 * Gets the prefix useful for direct path concatenation, which is the path itself except empty string for "/".
-	 */
-	public String getPrefix() {
-		return prefix;
-	}
+  /**
+   * Gets the prefix useful for direct path concatenation, which is the path itself except empty string for "/".
+   */
+  public String getPrefix() {
+    return prefix;
+  }
 
-	/**
-	 * Must generate a toString based on the repository type and prefix
-	 */
-	@Override
-	public abstract String toString();
+  /**
+   * Must generate a toString based on the repository type and prefix
+   */
+  @Override
+  public abstract String toString();
 
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+  @Override
+  public boolean isAvailable() {
+    return true;
+  }
 
-	@Override
-	public Page getPage(Path path, CaptureLevel level) throws IOException {
-		Tuple2<String, RequestDispatcher> pathAndRequestDispatcher = getRequestDispatcher(path);
-		if(pathAndRequestDispatcher == null) return null;
-		final String requestDispatcherPath = pathAndRequestDispatcher.getElement1();
-		final RequestDispatcher dispatcher = pathAndRequestDispatcher.getElement2();
-		try {
-			HttpServletRequest request = PageContext.getRequest();
-			HttpServletResponse response = PageContext.getResponse();
-			final IHttpServletSubRequest subRequest;
-			if(request instanceof IHttpServletSubRequest) {
-				subRequest = (IHttpServletSubRequest)request;
-			} else {
-				subRequest = new HttpServletSubRequestWrapper(request);
-			}
-			final IHttpServletSubResponse subResponse;
-			if(response instanceof IHttpServletSubResponse) {
-				subResponse = (IHttpServletSubResponse)response;
-			} else {
-				subResponse = new HttpServletSubResponseWrapper(response, TempFileContextEE.get(request));
-			}
-			// Clear request values that break captures
-			CurrentNode.setCurrentNode(subRequest, null);
-			CurrentPage.setCurrentPage(subRequest, null);
-			// Set the content type
-			Serialization currentSerialization = SerializationEE.getDefault(servletContext, subRequest);
-			SerializationEE.set(subRequest, currentSerialization);
-			ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), /*AnyDocument.*/ENCODING);
-			// Set the default doctype for all captures
-			DoctypeEE.set(subRequest, Doctype.DEFAULT);
-			// Set new capture context
-			CurrentCaptureLevel.setCaptureLevel(subRequest, level);
-			CaptureContext captureContext = new CaptureContext();
-			CaptureContext.REQUEST_ATTRIBUTE.context(subRequest).set(captureContext);
-			// Always capture as "GET" request
-			subRequest.setMethod(HttpServletUtil.METHOD_GET);
-			// TODO: Set more "current" for request and response
-			// TODO: Is PageContext useful for this?
-			// TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
-			// Include the page resource, discarding any direct output
-			try {
-				// Clear PageContext on include
-				PageContext.newPageContextSkip(
-					null,
-					null,
-					null,
-					() -> Dispatcher.include(
-						requestDispatcherPath,
-						dispatcher,
-						subRequest,
-						// Discard all output
-						new NullHttpServletResponseWrapper(subResponse)
-					)
-				);
-			} catch(SkipPageException e) {
-				// An individual page may throw SkipPageException which only terminates
-				// the capture, not the request overall
-			}
-			Page capturedPage = captureContext.getCapturedPage();
-			if(capturedPage == null) throw new ServletException("No page captured, page=" + requestDispatcherPath);
-			return capturedPage;
-		} catch(ServletException e) {
-			throw new IOException(e);
-		}
-	}
+  @Override
+  public Page getPage(Path path, CaptureLevel level) throws IOException {
+    Tuple2<String, RequestDispatcher> pathAndRequestDispatcher = getRequestDispatcher(path);
+    if (pathAndRequestDispatcher == null) {
+      return null;
+    }
+    final String requestDispatcherPath = pathAndRequestDispatcher.getElement1();
+    final RequestDispatcher dispatcher = pathAndRequestDispatcher.getElement2();
+    try {
+      HttpServletRequest request = PageContext.getRequest();
+      HttpServletResponse response = PageContext.getResponse();
+      final IHttpServletSubRequest subRequest;
+      if (request instanceof IHttpServletSubRequest) {
+        subRequest = (IHttpServletSubRequest)request;
+      } else {
+        subRequest = new HttpServletSubRequestWrapper(request);
+      }
+      final IHttpServletSubResponse subResponse;
+      if (response instanceof IHttpServletSubResponse) {
+        subResponse = (IHttpServletSubResponse)response;
+      } else {
+        subResponse = new HttpServletSubResponseWrapper(response, TempFileContextEE.get(request));
+      }
+      // Clear request values that break captures
+      CurrentNode.setCurrentNode(subRequest, null);
+      CurrentPage.setCurrentPage(subRequest, null);
+      // Set the content type
+      Serialization currentSerialization = SerializationEE.getDefault(servletContext, subRequest);
+      SerializationEE.set(subRequest, currentSerialization);
+      ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), /*AnyDocument.*/ENCODING);
+      // Set the default doctype for all captures
+      DoctypeEE.set(subRequest, Doctype.DEFAULT);
+      // Set new capture context
+      CurrentCaptureLevel.setCaptureLevel(subRequest, level);
+      CaptureContext captureContext = new CaptureContext();
+      CaptureContext.REQUEST_ATTRIBUTE.context(subRequest).set(captureContext);
+      // Always capture as "GET" request
+      subRequest.setMethod(HttpServletUtil.METHOD_GET);
+      // TODO: Set more "current" for request and response
+      // TODO: Is PageContext useful for this?
+      // TODO: capturedPage = repository.capturePage(pageRef.getPath(), level);
+      // Include the page resource, discarding any direct output
+      try {
+        // Clear PageContext on include
+        PageContext.newPageContextSkip(
+          null,
+          null,
+          null,
+          () -> Dispatcher.include(
+            requestDispatcherPath,
+            dispatcher,
+            subRequest,
+            // Discard all output
+            new NullHttpServletResponseWrapper(subResponse)
+          )
+        );
+      } catch (SkipPageException e) {
+        // An individual page may throw SkipPageException which only terminates
+        // the capture, not the request overall
+      }
+      Page capturedPage = captureContext.getCapturedPage();
+      if (capturedPage == null) {
+        throw new ServletException("No page captured, page=" + requestDispatcherPath);
+      }
+      return capturedPage;
+    } catch (ServletException e) {
+      throw new IOException(e);
+    }
+  }
 
-	/**
-	 * Gets the path for the {@link RequestDispatcher} for the given path or {@code null}
-	 * if the page is known to not exist.
-	 */
-	protected abstract Tuple2<String, RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
+  /**
+   * Gets the path for the {@link RequestDispatcher} for the given path or {@code null}
+   * if the page is known to not exist.
+   */
+  protected abstract Tuple2<String, RequestDispatcher> getRequestDispatcher(Path path) throws IOException;
 }

@@ -30,7 +30,7 @@ import com.aoapps.lang.concurrent.ThreadLocalsRunnable;
  */
 public class PageContextRunnable extends ThreadLocalsRunnable {
 
-	public PageContextRunnable(Runnable task) {
-		super(task, PageContextCallable.threadLocals);
-	}
+  public PageContextRunnable(Runnable task) {
+    super(task, PageContextCallable.threadLocals);
+  }
 }

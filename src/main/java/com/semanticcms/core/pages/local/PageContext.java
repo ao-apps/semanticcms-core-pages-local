@@ -49,428 +49,564 @@ import javax.servlet.jsp.SkipPageException;
  */
 public final class PageContext {
 
-	/** Make no instances, all is done through thread locals. */
-	private PageContext() {throw new AssertionError();}
+  /** Make no instances, all is done through thread locals. */
+  private PageContext() {
+    throw new AssertionError();
+  }
 
-	static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
+  static final ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 
-	static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
+  static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
 
-	static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<>();
+  static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<>();
 
-	static final ThreadLocal<PrintWriter> out = new ThreadLocal<>();
+  static final ThreadLocal<PrintWriter> out = new ThreadLocal<>();
 
-	@FunctionalInterface
-	public static interface PageContextRunnable {
-		void run() throws ServletException, IOException;
-	}
+  @FunctionalInterface
+  public static interface PageContextRunnable {
+    void run() throws ServletException, IOException;
+  }
 
-	public static void newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnable target) throws ServletException, IOException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			target.run();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  public static void newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnable target) throws ServletException, IOException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      target.run();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	@FunctionalInterface
-	public static interface PageContextCallable<V> extends Callable<V> {
-		@Override
-		V call() throws ServletException, IOException;
-	}
+  @FunctionalInterface
+  public static interface PageContextCallable<V> extends Callable<V> {
+    @Override
+    V call() throws ServletException, IOException;
+  }
 
-	public static <V> V newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallable<V> target) throws ServletException, IOException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			return target.call();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  public static <V> V newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallable<V> target) throws ServletException, IOException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      return target.call();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	@FunctionalInterface
-	public static interface PageContextRunnableSkip {
-		void run() throws ServletException, IOException, SkipPageException;
-	}
+  @FunctionalInterface
+  public static interface PageContextRunnableSkip {
+    void run() throws ServletException, IOException, SkipPageException;
+  }
 
-	/**
-	 * Establishes a new page context.
-	 * This usually does not need to be done directly as creating a page will
-	 * establish the starting page context.
-	 */
-	public static void newPageContextSkip(
-		ServletContext newServletContext,
-		HttpServletRequest newRequest,
-		HttpServletResponse newResponse,
-		PageContextRunnableSkip target
-	) throws ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			target.run();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  /**
+   * Establishes a new page context.
+   * This usually does not need to be done directly as creating a page will
+   * establish the starting page context.
+   */
+  public static void newPageContextSkip(
+    ServletContext newServletContext,
+    HttpServletRequest newRequest,
+    HttpServletResponse newResponse,
+    PageContextRunnableSkip target
+  ) throws ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      target.run();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	@FunctionalInterface
-	public static interface PageContextCallableSkip<V> extends Callable<V> {
-		@Override
-		V call() throws ServletException, IOException, SkipPageException;
-	}
+  @FunctionalInterface
+  public static interface PageContextCallableSkip<V> extends Callable<V> {
+    @Override
+    V call() throws ServletException, IOException, SkipPageException;
+  }
 
-	/**
-	 * Establishes a new page context.
-	 * This usually does not need to be done directly as creating a page will
-	 * establish the starting page context.
-	 */
-	public static <V> V newPageContextSkip(
-		ServletContext newServletContext,
-		HttpServletRequest newRequest,
-		HttpServletResponse newResponse,
-		PageContextCallableSkip<V> target
-	) throws ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			return target.call();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  /**
+   * Establishes a new page context.
+   * This usually does not need to be done directly as creating a page will
+   * establish the starting page context.
+   */
+  public static <V> V newPageContextSkip(
+    ServletContext newServletContext,
+    HttpServletRequest newRequest,
+    HttpServletResponse newResponse,
+    PageContextCallableSkip<V> target
+  ) throws ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      return target.call();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	@FunctionalInterface
-	public static interface PageContextRunnableSkipE<Ex extends Throwable> {
-		void run() throws Ex, ServletException, IOException, SkipPageException;
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @FunctionalInterface
+  public static interface PageContextRunnableSkipE<Ex extends Throwable> {
+    void run() throws Ex, ServletException, IOException, SkipPageException;
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	public static <Ex extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<Ex> target) throws Ex, ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			target.run();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  public static <Ex extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<Ex> target) throws Ex, ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      target.run();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	@FunctionalInterface
-	// TODO: Ex extends Throwable
-	public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
-		@Override
-		V call() throws Ex, ServletException, IOException, SkipPageException;
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @FunctionalInterface
+  // TODO: Ex extends Throwable
+  public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
+    @Override
+    V call() throws Ex, ServletException, IOException, SkipPageException;
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	// TODO: Ex extends Throwable
-	public static <V, Ex extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V, Ex> target) throws Ex, ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			return target.call();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  // TODO: Ex extends Throwable
+  public static <V, Ex extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V, Ex> target) throws Ex, ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      return target.call();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	@FunctionalInterface
-	public static interface PageContextRunnableSkipEE<Ex1 extends Throwable, Ex2 extends Throwable> {
-		void run() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
-	}
+  @FunctionalInterface
+  public static interface PageContextRunnableSkipEE<Ex1 extends Throwable, Ex2 extends Throwable> {
+    void run() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
+  }
 
-	public static <Ex1 extends Throwable, Ex2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			target.run();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  public static <Ex1 extends Throwable, Ex2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      target.run();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	// TODO: Extend Throwable
-	@FunctionalInterface
-	public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
-		@Override
-		V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
-	}
+  // TODO: Extend Throwable
+  @FunctionalInterface
+  public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
+    @Override
+    V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
+  }
 
-	public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V, Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
-		final ServletContext oldServletContext = servletContext.get();
-		final HttpServletRequest oldRequest = request.get();
-		final HttpServletResponse oldResponse = response.get();
-		final PrintWriter oldOut = out.get();
-		PrintWriter newOut = null;
-		try {
-			if(newServletContext != oldServletContext) servletContext.set(newServletContext);
-			if(newRequest != oldRequest) request.set(newRequest);
-			if(newResponse != oldResponse) {
-				response.set(newResponse);
-				out.remove();
-			} else {
-				newOut = oldOut;
-			}
-			return target.call();
-		} finally {
-			if(newServletContext != oldServletContext) {
-				if(oldServletContext == null) servletContext.remove();
-				else servletContext.set(oldServletContext);
-			}
-			if(newRequest != oldRequest) {
-				if(oldRequest == null) request.remove();
-				else request.set(oldRequest);
-			}
-			if(newResponse != oldResponse) {
-				if(oldResponse == null) response.remove();
-				else response.set(oldResponse);
-			}
-			if(newOut != oldOut) {
-				if(oldOut == null) out.remove();
-				else out.set(oldOut);
-			}
-		}
-	}
+  public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V, Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
+    final ServletContext oldServletContext = servletContext.get();
+    final HttpServletRequest oldRequest = request.get();
+    final HttpServletResponse oldResponse = response.get();
+    final PrintWriter oldOut = out.get();
+    PrintWriter newOut = null;
+    try {
+      if (newServletContext != oldServletContext) {
+        servletContext.set(newServletContext);
+      }
+      if (newRequest != oldRequest) {
+        request.set(newRequest);
+      }
+      if (newResponse != oldResponse) {
+        response.set(newResponse);
+        out.remove();
+      } else {
+        newOut = oldOut;
+      }
+      return target.call();
+    } finally {
+      if (newServletContext != oldServletContext) {
+        if (oldServletContext == null) {
+          servletContext.remove();
+        } else {
+          servletContext.set(oldServletContext);
+        }
+      }
+      if (newRequest != oldRequest) {
+        if (oldRequest == null) {
+          request.remove();
+        } else {
+          request.set(oldRequest);
+        }
+      }
+      if (newResponse != oldResponse) {
+        if (oldResponse == null) {
+          response.remove();
+        } else {
+          response.set(oldResponse);
+        }
+      }
+      if (newOut != oldOut) {
+        if (oldOut == null) {
+          out.remove();
+        } else {
+          out.set(oldOut);
+        }
+      }
+    }
+  }
 
-	/**
-	 * Gets the current servlet context.
-	 *
-	 * @throws  IllegalStateException if no context set
-	 */
-	public static ServletContext getServletContext() throws IllegalStateException {
-		ServletContext s = servletContext.get();
-		if(s == null) throw new IllegalStateException("No page context");
-		return s;
-	}
+  /**
+   * Gets the current servlet context.
+   *
+   * @throws  IllegalStateException if no context set
+   */
+  public static ServletContext getServletContext() throws IllegalStateException {
+    ServletContext s = servletContext.get();
+    if (s == null) {
+      throw new IllegalStateException("No page context");
+    }
+    return s;
+  }
 
-	/**
-	 * Gets the current request.
-	 *
-	 * @throws  IllegalStateException if no context set
-	 */
-	public static HttpServletRequest getRequest() throws IllegalStateException {
-		HttpServletRequest r = request.get();
-		if(r == null) throw new IllegalStateException("No page context");
-		return r;
-	}
+  /**
+   * Gets the current request.
+   *
+   * @throws  IllegalStateException if no context set
+   */
+  public static HttpServletRequest getRequest() throws IllegalStateException {
+    HttpServletRequest r = request.get();
+    if (r == null) {
+      throw new IllegalStateException("No page context");
+    }
+    return r;
+  }
 
-	/**
-	 * Gets the current response.
-	 *
-	 * @throws  IllegalStateException if no context set
-	 */
-	public static HttpServletResponse getResponse() throws IllegalStateException {
-		HttpServletResponse r = response.get();
-		if(r == null) throw new IllegalStateException("No page context");
-		return r;
-	}
+  /**
+   * Gets the current response.
+   *
+   * @throws  IllegalStateException if no context set
+   */
+  public static HttpServletResponse getResponse() throws IllegalStateException {
+    HttpServletResponse r = response.get();
+    if (r == null) {
+      throw new IllegalStateException("No page context");
+    }
+    return r;
+  }
 
-	/**
-	 * Gets the current response writer.
-	 *
-	 * @throws  IllegalStateException if no context set
-	 */
-	public static PrintWriter getOut() throws IllegalStateException, IOException {
-		PrintWriter o = out.get();
-		if(o == null) {
-			o = getResponse().getWriter();
-			out.set(o);
-		}
-		return o;
-	}
+  /**
+   * Gets the current response writer.
+   *
+   * @throws  IllegalStateException if no context set
+   */
+  public static PrintWriter getOut() throws IllegalStateException, IOException {
+    PrintWriter o = out.get();
+    if (o == null) {
+      o = getResponse().getWriter();
+      out.set(o);
+    }
+    return o;
+  }
 }

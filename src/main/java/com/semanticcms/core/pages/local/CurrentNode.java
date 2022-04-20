@@ -32,19 +32,21 @@ import javax.servlet.ServletRequest;
  */
 public final class CurrentNode {
 
-	/** Make no instances. */
-	private CurrentNode() {throw new AssertionError();}
+  /** Make no instances. */
+  private CurrentNode() {
+    throw new AssertionError();
+  }
 
-	/**
-	 * Cleared and restored on request in CapturePage
-	 */
-	public static final ScopeEE.Request.Attribute<Node> REQUEST_ATTRIBUTE = ScopeEE.REQUEST.attribute("currentNode");
+  /**
+   * Cleared and restored on request in CapturePage
+   */
+  public static final ScopeEE.Request.Attribute<Node> REQUEST_ATTRIBUTE = ScopeEE.REQUEST.attribute("currentNode");
 
-	public static Node getCurrentNode(ServletRequest request) {
-		return REQUEST_ATTRIBUTE.context(request).get();
-	}
+  public static Node getCurrentNode(ServletRequest request) {
+    return REQUEST_ATTRIBUTE.context(request).get();
+  }
 
-	public static void setCurrentNode(ServletRequest request, Node node) {
-		REQUEST_ATTRIBUTE.context(request).set(node);
-	}
+  public static void setCurrentNode(ServletRequest request, Node node) {
+    REQUEST_ATTRIBUTE.context(request).set(node);
+  }
 }
