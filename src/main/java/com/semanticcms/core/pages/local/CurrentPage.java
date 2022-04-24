@@ -41,7 +41,7 @@ public final class CurrentPage {
    * Cleared and restored on request in CapturePage
    */
   public static final ScopeEE.Request.Attribute<Page> REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(/*PageTag.class.getName()+".*/ "currentPage");
+      ScopeEE.REQUEST.attribute(/*PageTag.class.getName()+".*/ "currentPage");
 
   /**
    * Gets the currentPage or <code>null</code> if not inside a <code>PageTag</code>.

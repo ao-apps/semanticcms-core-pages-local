@@ -120,13 +120,13 @@ public abstract class LocalPageRepository implements PageRepository {
       HttpServletResponse response = PageContext.getResponse();
       final IHttpServletSubRequest subRequest;
       if (request instanceof IHttpServletSubRequest) {
-        subRequest = (IHttpServletSubRequest)request;
+        subRequest = (IHttpServletSubRequest) request;
       } else {
         subRequest = new HttpServletSubRequestWrapper(request);
       }
       final IHttpServletSubResponse subResponse;
       if (response instanceof IHttpServletSubResponse) {
-        subResponse = (IHttpServletSubResponse)response;
+        subResponse = (IHttpServletSubResponse) response;
       } else {
         subResponse = new HttpServletSubResponseWrapper(response, TempFileContextEE.get(request));
       }
@@ -152,16 +152,16 @@ public abstract class LocalPageRepository implements PageRepository {
       try {
         // Clear PageContext on include
         PageContext.newPageContextSkip(
-          null,
-          null,
-          null,
-          () -> Dispatcher.include(
-            requestDispatcherPath,
-            dispatcher,
-            subRequest,
-            // Discard all output
-            new NullHttpServletResponseWrapper(subResponse)
-          )
+            null,
+            null,
+            null,
+            () -> Dispatcher.include(
+                requestDispatcherPath,
+                dispatcher,
+                subRequest,
+                // Discard all output
+                new NullHttpServletResponseWrapper(subResponse)
+            )
         );
       } catch (SkipPageException e) {
         // An individual page may throw SkipPageException which only terminates

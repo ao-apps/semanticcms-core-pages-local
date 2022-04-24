@@ -34,7 +34,7 @@ import javax.servlet.ServletRequest;
 public class CaptureContext {
 
   static final ScopeEE.Request.Attribute<CaptureContext> REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(CaptureContext.class.getName());
+      ScopeEE.REQUEST.attribute(CaptureContext.class.getName());
 
   /**
    * Gets the capture context or <code>null</code> if none occurring.
@@ -44,13 +44,14 @@ public class CaptureContext {
   }
 
   private Page capturedPage;
+
   public void setCapturedPage(Page capturedPage) {
     NullArgumentException.checkNotNull(capturedPage, "page");
     if (this.capturedPage != null) {
       throw new IllegalStateException(
-        "Cannot capture more than one page: first page="
-        + this.capturedPage.getPageRef()
-        + ", second page=" + capturedPage.getPageRef()
+          "Cannot capture more than one page: first page="
+              + this.capturedPage.getPageRef()
+              + ", second page=" + capturedPage.getPageRef()
       );
     }
     this.capturedPage = capturedPage;

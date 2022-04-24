@@ -188,10 +188,10 @@ public final class PageContext {
    * establish the starting page context.
    */
   public static void newPageContextSkip(
-    ServletContext newServletContext,
-    HttpServletRequest newRequest,
-    HttpServletResponse newResponse,
-    PageContextRunnableSkip target
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextRunnableSkip target
   ) throws ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
@@ -256,10 +256,10 @@ public final class PageContext {
    * establish the starting page context.
    */
   public static <V> V newPageContextSkip(
-    ServletContext newServletContext,
-    HttpServletRequest newRequest,
-    HttpServletResponse newResponse,
-    PageContextCallableSkip<V> target
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextCallableSkip<V> target
   ) throws ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();

@@ -38,7 +38,7 @@ public final class CurrentCaptureLevel {
   }
 
   private static final ScopeEE.Request.Attribute<CaptureLevel> CAPTURE_LEVEL_REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(CurrentCaptureLevel.class.getName() + ".captureLevel");
+      ScopeEE.REQUEST.attribute(CurrentCaptureLevel.class.getName() + ".captureLevel");
 
   /**
    * Gets the capture level or {@link CaptureLevel#BODY} if none occurring.

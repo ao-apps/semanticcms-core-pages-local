@@ -32,10 +32,10 @@ import java.util.concurrent.Callable;
 public class PageContextCallable<T> extends ThreadLocalsCallable<T> {
 
   static final ThreadLocal<?>[] threadLocals = {
-    PageContext.servletContext,
-    PageContext.request,
-    PageContext.response,
-    PageContext.out
+      PageContext.servletContext,
+      PageContext.request,
+      PageContext.response,
+      PageContext.out
   };
 
   public PageContextCallable(Callable<T> task) {
