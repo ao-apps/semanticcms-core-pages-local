@@ -67,7 +67,12 @@ public final class PageContext {
     void run() throws ServletException, IOException;
   }
 
-  public static void newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnable target) throws ServletException, IOException {
+  public static void newPageContext(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextRunnable target
+  ) throws ServletException, IOException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();
@@ -125,7 +130,12 @@ public final class PageContext {
     V call() throws ServletException, IOException;
   }
 
-  public static <V> V newPageContext(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallable<V> target) throws ServletException, IOException {
+  public static <V> V newPageContext(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextCallable<V> target
+  ) throws ServletException, IOException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();
@@ -323,7 +333,12 @@ public final class PageContext {
   /**
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
-  public static <Ex extends Throwable> void newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipE<Ex> target) throws Ex, ServletException, IOException, SkipPageException {
+  public static <Ex extends Throwable> void newPageContextSkipE(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextRunnableSkipE<Ex> target
+  ) throws Ex, ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();
@@ -389,7 +404,12 @@ public final class PageContext {
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   // TODO: Ex extends Throwable
-  public static <V, Ex extends Exception> V newPageContextSkipE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipE<V, Ex> target) throws Ex, ServletException, IOException, SkipPageException {
+  public static <V, Ex extends Exception> V newPageContextSkipE(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextCallableSkipE<V, Ex> target
+  ) throws Ex, ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();
@@ -446,7 +466,12 @@ public final class PageContext {
     void run() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
   }
 
-  public static <Ex1 extends Throwable, Ex2 extends Throwable> void newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextRunnableSkipEE<Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
+  public static <Ex1 extends Throwable, Ex2 extends Throwable> void newPageContextSkipEE(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextRunnableSkipEE<Ex1, Ex2> target
+  ) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();
@@ -505,7 +530,12 @@ public final class PageContext {
     V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
   }
 
-  public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(ServletContext newServletContext, HttpServletRequest newRequest, HttpServletResponse newResponse, PageContextCallableSkipEE<V, Ex1, Ex2> target) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
+  public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(
+      ServletContext newServletContext,
+      HttpServletRequest newRequest,
+      HttpServletResponse newResponse,
+      PageContextCallableSkipEE<V, Ex1, Ex2> target
+  ) throws Ex1, Ex2, ServletException, IOException, SkipPageException {
     final ServletContext oldServletContext = servletContext.get();
     final HttpServletRequest oldRequest = request.get();
     final HttpServletResponse oldResponse = response.get();

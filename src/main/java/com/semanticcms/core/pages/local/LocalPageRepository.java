@@ -97,7 +97,7 @@ public abstract class LocalPageRepository implements PageRepository {
   }
 
   /**
-   * Must generate a toString based on the repository type and prefix
+   * Must generate a toString based on the repository type and prefix.
    */
   @Override
   public abstract String toString();

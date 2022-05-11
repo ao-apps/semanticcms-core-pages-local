@@ -38,7 +38,7 @@ public final class CurrentNode {
   }
 
   /**
-   * Cleared and restored on request in CapturePage
+   * Cleared and restored on request in CapturePage.
    */
   public static final ScopeEE.Request.Attribute<Node> REQUEST_ATTRIBUTE = ScopeEE.REQUEST.attribute("currentNode");
 
