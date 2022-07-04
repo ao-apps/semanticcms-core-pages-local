@@ -47,7 +47,7 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
     <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
   </properties>
 
-  <name>SemanticCMS Core Pages Local²</name>
+  <name>SemanticCMS Core Pages Local</name>
   <url>https://semanticcms.com/core/pages/local/</url>
   <description>Support for SemanticCMS pages produced by the local servlet container.</description>
   <inceptionYear>2017</inceptionYear>

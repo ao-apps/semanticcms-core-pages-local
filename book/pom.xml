@@ -36,15 +36,15 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
     <module.name>com.semanticcms.core.pages.local.book</module.name>
     <!-- These values are copied from the project being documented -->
     <documented.artifactId>semanticcms-core-pages-local</documented.artifactId>
-    <documented.name>SemanticCMS Core Pages Local²</documented.name>
+    <documented.name>SemanticCMS Core Pages Local</documented.name>
     <documented.description>Support for SemanticCMS pages produced by the local servlet container.</documented.description>
 
     <description.html><![CDATA[Documentation for <a target="${javadoc.target}" href="${project.url}">${documented.name}</a> in <a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a> format.]]></description.html>
   </properties>
 
-  <name>SemanticCMS Core Pages Local² Book</name>
+  <name>SemanticCMS Core Pages Local Book</name>
   <url>https://semanticcms.com/core/pages/local/</url>
-  <description>Documentation for SemanticCMS Core Pages Local² in SemanticCMS format.</description>
+  <description>Documentation for SemanticCMS Core Pages Local in SemanticCMS format.</description>
   <inceptionYear>2017</inceptionYear>
 
   <licenses>
