@@ -23,7 +23,7 @@ Support for [SemanticCMS](https://github.com/ao-apps/semanticcms) pages produced
 * [Project Home](https://semanticcms.com/core/pages/local/)
 * [Changelog](https://semanticcms.com/core/pages/local/changelog)
 * [API Docs](https://semanticcms.com/core/pages/local/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.semanticcms&q=a%3Asemanticcms-core-pages-local)
+* [Maven Central Repository](https://central.sonatype.com/artifact/com.semanticcms/semanticcms-core-pages-local)
 * [GitHub](https://github.com/ao-apps/semanticcms-core-pages-local)
 
 ## Contact Us
