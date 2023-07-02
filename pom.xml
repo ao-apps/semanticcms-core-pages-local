@@ -171,6 +171,11 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
                       <outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-servlet-util</outputDirectory>
                     </artifactItem>
                     <artifactItem>
+                      <groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><classifier>javadoc</classifier>
+                      <includes>element-list, package-list</includes>
+                      <outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
                       <groupId>com.aoapps</groupId><artifactId>ao-tempfiles-servlet</artifactId><classifier>javadoc</classifier>
                       <includes>element-list, package-list</includes>
                       <outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles-servlet</outputDirectory>
@@ -224,6 +229,10 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
                 <offlineLink>
                   <url>https://oss.aoapps.com/servlet-util/apidocs/</url>
                   <location>${project.build.directory}/offlineLinks/com.aoapps/ao-servlet-util</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>https://oss.aoapps.com/tempfiles/apidocs/</url>
+                  <location>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles</location>
                 </offlineLink>
                 <offlineLink>
                   <url>https://oss.aoapps.com/tempfiles/servlet/apidocs/</url>
@@ -311,6 +320,9 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
         <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId><version>5.2.1${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
+        <groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><version>3.0.2${POST-SNAPSHOT}</version>
+      </dependency>
+      <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-tempfiles-servlet</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
       </dependency>
       <!-- javaee-web-api-bom: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
@@ -327,9 +339,6 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-io-buffer</artifactId><version>4.1.0${POST-SNAPSHOT}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><version>3.0.2${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-tlds</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
@@ -374,6 +383,9 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
     </dependency>
     <dependency>
       <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId>
     </dependency>
     <dependency>
       <groupId>com.aoapps</groupId><artifactId>ao-tempfiles-servlet</artifactId>
