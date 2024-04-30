@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-pages-local - Support for SemanticCMS pages produced by the local servlet container.
- * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -67,6 +67,12 @@ public final class PageContext {
     void run() throws ServletException, IOException;
   }
 
+  @FunctionalInterface
+  public static interface PageContextCallable<V> extends Callable<V> {
+    @Override
+    V call() throws ServletException, IOException;
+  }
+
   public static void newPageContext(
       ServletContext newServletContext,
       HttpServletRequest newRequest,
@@ -122,12 +128,6 @@ public final class PageContext {
         }
       }
     }
-  }
-
-  @FunctionalInterface
-  public static interface PageContextCallable<V> extends Callable<V> {
-    @Override
-    V call() throws ServletException, IOException;
   }
 
   public static <V> V newPageContext(
@@ -192,6 +192,12 @@ public final class PageContext {
     void run() throws ServletException, IOException, SkipPageException;
   }
 
+  @FunctionalInterface
+  public static interface PageContextCallableSkip<V> extends Callable<V> {
+    @Override
+    V call() throws ServletException, IOException, SkipPageException;
+  }
+
   /**
    * Establishes a new page context.
    * This usually does not need to be done directly as creating a page will
@@ -252,12 +258,6 @@ public final class PageContext {
         }
       }
     }
-  }
-
-  @FunctionalInterface
-  public static interface PageContextCallableSkip<V> extends Callable<V> {
-    @Override
-    V call() throws ServletException, IOException, SkipPageException;
   }
 
   /**
@@ -333,6 +333,16 @@ public final class PageContext {
   /**
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
+  @FunctionalInterface
+  // TODO: Ex extends Throwable
+  public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
+    @Override
+    V call() throws Ex, ServletException, IOException, SkipPageException;
+  }
+
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
   public static <Ex extends Throwable> void newPageContextSkipE(
       ServletContext newServletContext,
       HttpServletRequest newRequest,
@@ -388,16 +398,6 @@ public final class PageContext {
         }
       }
     }
-  }
-
-  /**
-   * @param  <Ex>  An arbitrary exception type that may be thrown
-   */
-  @FunctionalInterface
-  // TODO: Ex extends Throwable
-  public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
-    @Override
-    V call() throws Ex, ServletException, IOException, SkipPageException;
   }
 
   /**
@@ -466,6 +466,13 @@ public final class PageContext {
     void run() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
   }
 
+  // TODO: Extend Throwable
+  @FunctionalInterface
+  public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
+    @Override
+    V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
+  }
+
   public static <Ex1 extends Throwable, Ex2 extends Throwable> void newPageContextSkipEE(
       ServletContext newServletContext,
       HttpServletRequest newRequest,
@@ -521,13 +528,6 @@ public final class PageContext {
         }
       }
     }
-  }
-
-  // TODO: Extend Throwable
-  @FunctionalInterface
-  public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
-    @Override
-    V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
   }
 
   public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(
