@@ -33,17 +33,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
 /**
- * <p>
  * HttpServletRequest, HttpServletResponse, and the response PrintWriter are frequently accessed
  * while also frequently updated by elements for capture.  It is tedious to pass these objects around
  * all over.  Also, with the lambda scoping in Java 8, it is easy to use the wrong object from a
  * different scope (and possibly capturing context).
- * </p>
- * <p>
- * Each context is intended to be established and used within a single servlet implementation.
+ *
+ * <p>Each context is intended to be established and used within a single servlet implementation.
  * Do not assume correct management of PageContext between different pages, servlets, or files.
- * If in doubt, skip this shortcut and pass explicit object references around.
- * </p>
+ * If in doubt, skip this shortcut and pass explicit object references around.</p>
  *
  * @see  PageContextWriter
  */
