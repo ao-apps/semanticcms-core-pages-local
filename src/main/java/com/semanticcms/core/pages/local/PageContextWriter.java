@@ -184,19 +184,19 @@ public final class PageContextWriter {
     return out;
   }
 
-  public static PrintWriter printf(String format, Object ... args) throws IOException {
+  public static PrintWriter printf(String format, Object... args) throws IOException {
     return PageContext.getOut().printf(format, args);
   }
 
-  public static PrintWriter printf(Locale l, String format, Object ... args) throws IOException {
+  public static PrintWriter printf(Locale l, String format, Object... args) throws IOException {
     return PageContext.getOut().printf(l, format, args);
   }
 
-  public static PrintWriter format(String format, Object ... args) throws IOException {
+  public static PrintWriter format(String format, Object... args) throws IOException {
     return PageContext.getOut().format(format, args);
   }
 
-  public static PrintWriter format(Locale l, String format, Object ... args) throws IOException {
+  public static PrintWriter format(Locale l, String format, Object... args) throws IOException {
     return PageContext.getOut().format(l, format, args);
   }
 
