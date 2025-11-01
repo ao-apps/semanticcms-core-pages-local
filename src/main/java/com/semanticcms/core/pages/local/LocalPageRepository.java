@@ -57,7 +57,6 @@ import javax.servlet.jsp.SkipPageException;
  */
 public abstract class LocalPageRepository implements PageRepository {
 
-
   // Matches AnyDocument.ENCODING
   public static final Charset ENCODING = StandardCharsets.UTF_8;
 
