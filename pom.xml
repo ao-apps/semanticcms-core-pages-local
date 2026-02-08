@@ -42,8 +42,6 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
 / <a target="${javadoc.target}" href="${project.url}">Local</a>]]></javadoc.breadcrumbs>
 
     <description.html><![CDATA[Support for <a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a> pages produced by the local servlet container.]]></description.html>
-    <!-- TODO: Implement tests -->
-    <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
   </properties>
 
   <name>SemanticCMS Core Pages Local</name>
@@ -194,6 +192,17 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
                       <includes>element-list, package-list</includes>
                       <outputDirectory>${project.build.directory}/offlineLinks/com.semanticcms/semanticcms-core-pages</outputDirectory>
                     </artifactItem>
+                    <!-- Test Direct -->
+                    <artifactItem>
+                      <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId><classifier>javadoc</classifier>
+                      <includes>element-list, package-list</includes>
+                      <outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-fluent-html-any</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>junit</groupId><artifactId>junit</artifactId><classifier>javadoc</classifier>
+                      <includes>element-list, package-list</includes>
+                      <outputDirectory>${project.build.directory}/offlineLinks/junit/junit</outputDirectory>
+                    </artifactItem>
                   </artifactItems>
                 </configuration>
               </execution>
@@ -249,6 +258,15 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
                 <offlineLink>
                   <url>https://semanticcms.com/core/pages/apidocs/</url>
                   <location>${project.build.directory}/offlineLinks/com.semanticcms/semanticcms-core-pages</location>
+                </offlineLink>
+                <!-- Test Direct -->
+                <offlineLink>
+                  <url>https://oss.aoapps.com/fluent-html/any/apidocs/</url>
+                  <location>${project.build.directory}/offlineLinks/com.aoapps/ao-fluent-html-any</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>https://junit.org/junit4/javadoc/latest/</url>
+                  <location>${project.build.directory}/offlineLinks/junit/junit</location>
                 </offlineLink>
               </offlineLinks>
             </configuration>
@@ -313,6 +331,21 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
         <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.20.0</version>
       </dependency>
       <!-- jakartaee-web-profile-bom: <groupId>jakarta.el</groupId><artifactId>jakarta.el-api</artifactId> -->
+      <!-- Test Direct -->
+      <dependency>
+        <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId><version>0.9.0${POST-SNAPSHOT}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version>
+      </dependency>
+      <!-- Test Transitive -->
+      <dependency>
+        <groupId>org.hamcrest</groupId><artifactId>hamcrest</artifactId><version>3.0</version>
+      </dependency>
+      <dependency>
+        <!-- Shim for junit 4.13.2 -->
+        <groupId>org.hamcrest</groupId><artifactId>hamcrest-core</artifactId><version>3.0</version>
+      </dependency>
       <!-- Imports -->
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>jakartaee-web-profile-bom</artifactId><version>10.0.0${POST-SNAPSHOT}</version>
@@ -362,6 +395,15 @@ along with semanticcms-core-pages-local.  If not, see <https://www.gnu.org/licen
     </dependency>
     <dependency>
       <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-pages</artifactId>
+    </dependency>
+    <!-- Test Direct -->
+    <dependency>
+      <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId><artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

@@ -58,6 +58,8 @@ import java.nio.charset.StandardCharsets;
 public abstract class LocalPageRepository implements PageRepository {
 
   // Matches AnyDocument.ENCODING
+  // Copied here to avoid picking-up dependency on ao-fluent-html-any.
+  // Value is verified in LocalPageRepositoryTest.java
   public static final Charset ENCODING = StandardCharsets.UTF_8;
 
   // TODO: A way to register the current capture level, page, node, request, ...
