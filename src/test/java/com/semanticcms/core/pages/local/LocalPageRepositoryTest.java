@@ -31,7 +31,7 @@ import org.junit.Test;
 public class LocalPageRepositoryTest {
 
   @Test
-  public void testEncodingEqualsAnyDocument() throws Exception {
+  public void testEncodingEqualsAnyDocument() {
     assertSame(AnyDocument.ENCODING, LocalPageRepository.ENCODING);
   }
 }
